@@ -1,0 +1,9 @@
+{
+  "name": "boundaries-management-dashboard",
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev"
+}
