@@ -1,0 +1,14 @@
+{
+  "lastChecks": {
+    "instagram": 1770348000,
+    "calendar": 1738463000,
+    "weather": 1770267167,
+    "email": 1738459330
+  },
+  "notes": {
+    "instagram": "Attempted 2/6 6:31pm - Browser connectivity issues persist. Chrome extension relay not connected despite successful page opening.",
+    "email": "Attempted 2/1 9:22pm - gog Gmail not configured. Need OAuth setup: download client credentials from Google Cloud Console and run 'gog auth credentials <file>' + 'gog auth add daniel.keene223@gmail.com'.",
+    "calendar": "Attempted 2/1 10:43pm - gog Calendar not configured. Same OAuth setup needed as email.",
+    "weather": "Checked 2/4 12:46pm - Aubrey, TX: ☀️ +41°F, 65% humidity, ↙9mph wind. Sunny but much cooler than yesterday."
+  }
+}

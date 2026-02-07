@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troy Global Search</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.4;
+        }
+        .header {
+            background: white;
+            border-bottom: 1px solid #d2d2d7;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 15px;
+        }
+        .search-main {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .search-box {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: #007AFF;
+        }
+        .search-btn {
+            padding: 12px 24px;
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-btn:hover {
+            background: #0056B3;
+        }
+        .search-btn:disabled {
+            background: #86868b;
+            cursor: not-allowed;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-label {
+            font-size: 14px;
+            color: #86868b;
+        }
+        .filter-select, .filter-input {
+            padding: 6px 10px;
+            border: 1px solid #d2d2d7;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+        .search-stats {
+            font-size: 13px;
+            color: #86868b;
+            margin-left: auto;
+        }
+        .search-container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .search-result {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #f0f0f0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .search-result:hover {
+            border-color: #d2d2d7;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+        .result-path {
+            font-size: 13px;
+            color: #86868b;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        .result-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 12px;
+            color: #86868b;
+            margin-bottom: 12px;
+        }
+        .result-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .type-memory { background: #e8f5e8; color: #2e7d32; }
+        .type-activity { background: #fff3e0; color: #ef6c00; }
+        .type-document { background: #e3f2fd; color: #1565c0; }
+        .type-system { background: #f3e5f5; color: #7b1fa2; }
+        .result-score {
+            font-weight: 500;
+            color: #007AFF;
+        }
+        .result-snippet {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #424245;
+            margin-bottom: 8px;
+        }
+        .result-snippet strong {
+            background: #fff2cc;
+            font-weight: 600;
+            padding: 1px 2px;
+            border-radius: 2px;
+        }
+        .result-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .action-btn {
+            padding: 4px 8px;
+            background: #f8f9fa;
+            border: 1px solid #d2d2d7;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .action-btn:hover {
+            background: #e9ecef;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #86868b;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #86868b;
+        }
+        .index-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #424245;
+        }
+        .index-info strong {
+            color: #1d1d1f;
+        }
+        .search-suggestions {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #f0f0f0;
+        }
+        .suggestions-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+        .suggestion-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .suggestion-tag {
+            padding: 4px 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .suggestion-tag:hover {
+            background: #e0e0e0;
+        }
+        .result-details {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 80%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        .result-details h3 {
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+        .result-details .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #86868b;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 Troy Global Search</h1>
+        <div class="search-main">
+            <input type="text" class="search-box" id="searchBox" 
+                   placeholder="Search across memories, activities, documents..." 
+                   autocomplete="off">
+            <button class="search-btn" id="searchBtn">Search</button>
+        </div>
+        <div class="filters">
+            <div class="filter-group">
+                <span class="filter-label">Type:</span>
+                <select class="filter-select" id="typeFilter">
+                    <option value="">All Types</option>
+                    <option value="memory">Memory</option>
+                    <option value="activity">Activity</option>
+                    <option value="document">Document</option>
+                    <option value="system">System</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Date from:</span>
+                <input type="date" class="filter-input" id="dateFrom">
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Date to:</span>
+                <input type="date" class="filter-input" id="dateTo">
+            </div>
+            <div class="search-stats" id="searchStats">
+                Ready to search Troy's complete memory and workspace
+            </div>
+        </div>
+    </div>
+
+    <div class="search-container" id="searchContainer">
+        <div class="index-info" id="indexInfo">
+            <strong>Search Index:</strong> Loading...
+        </div>
+
+        <div class="search-suggestions">
+            <div class="suggestions-title">Try searching for:</div>
+            <div class="suggestion-tags">
+                <span class="suggestion-tag" onclick="search.searchFor('activity feed')">activity feed</span>
+                <span class="suggestion-tag" onclick="search.searchFor('boundaries coffee')">boundaries coffee</span>
+                <span class="suggestion-tag" onclick="search.searchFor('fundraising')">fundraising</span>
+                <span class="suggestion-tag" onclick="search.searchFor('little elm')">little elm</span>
+                <span class="suggestion-tag" onclick="search.searchFor('heartbeat')">heartbeat</span>
+                <span class="suggestion-tag" onclick="search.searchFor('calendar')">calendar</span>
+                <span class="suggestion-tag" onclick="search.searchFor('email')">email</span>
+                <span class="suggestion-tag" onclick="search.searchFor('daniel')">daniel</span>
+            </div>
+        </div>
+
+        <div id="searchResults"></div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="result-details" id="resultDetails">
+        <button class="close-btn" id="closeBtn">×</button>
+        <div id="resultDetailsContent"></div>
+    </div>
+
+    <script>
+        class GlobalSearch {
+            constructor() {
+                this.results = [];
+                this.indexInfo = null;
+                this.initializeElements();
+                this.setupEventListeners();
+                this.loadIndexInfo();
+            }
+
+            initializeElements() {
+                this.searchBox = document.getElementById('searchBox');
+                this.searchBtn = document.getElementById('searchBtn');
+                this.typeFilter = document.getElementById('typeFilter');
+                this.dateFrom = document.getElementById('dateFrom');
+                this.dateTo = document.getElementById('dateTo');
+                this.searchStats = document.getElementById('searchStats');
+                this.indexInfoElement = document.getElementById('indexInfo');
+                this.searchResults = document.getElementById('searchResults');
+                this.overlay = document.getElementById('overlay');
+                this.resultDetails = document.getElementById('resultDetails');
+                this.closeBtn = document.getElementById('closeBtn');
+            }
+
+            setupEventListeners() {
+                this.searchBox.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.performSearch();
+                });
+                this.searchBtn.addEventListener('click', () => this.performSearch());
+                this.closeBtn.addEventListener('click', () => this.closeResultDetails());
+                this.overlay.addEventListener('click', () => this.closeResultDetails());
+
+                // Filter changes
+                this.typeFilter.addEventListener('change', () => this.filterResults());
+                this.dateFrom.addEventListener('change', () => this.filterResults());
+                this.dateTo.addEventListener('change', () => this.filterResults());
+            }
+
+            async loadIndexInfo() {
+                try {
+                    // For demo, use sample data
+                    this.indexInfo = {
+                        generated: new Date().toISOString(),
+                        stats: {
+                            total_docs: 154,
+                            total_terms: 3686,
+                            total_size: 2093300
+                        },
+                        document_types: [
+                            { type: 'memory', count: 11 },
+                            { type: 'activity', count: 7 },
+                            { type: 'document', count: 140 },
+                            { type: 'system', count: 7 }
+                        ]
+                    };
+
+                    this.updateIndexInfo();
+                } catch (error) {
+                    this.indexInfoElement.innerHTML = '<strong>Search Index:</strong> Error loading index information';
+                }
+            }
+
+            updateIndexInfo() {
+                if (!this.indexInfo) return;
+
+                const { stats, document_types } = this.indexInfo;
+                const typesSummary = document_types.map(t => `${t.count} ${t.type}`).join(', ');
+                
+                this.indexInfoElement.innerHTML = 
+                    `<strong>Search Index:</strong> ${stats.total_docs} documents, ${stats.total_terms} terms (${typesSummary}) - Last updated: ${new Date(this.indexInfo.generated).toLocaleString()}`;
+            }
+
+            searchFor(query) {
+                this.searchBox.value = query;
+                this.performSearch();
+            }
+
+            async performSearch() {
+                const query = this.searchBox.value.trim();
+                if (!query) {
+                    this.showEmptyState('Enter a search term to find information across Troy\'s memory and workspace');
+                    return;
+                }
+
+                this.showLoading('Searching...');
+                this.searchBtn.disabled = true;
+
+                try {
+                    // For demo, simulate search results
+                    const results = await this.simulateSearch(query);
+                    this.results = results;
+                    this.renderResults();
+                } catch (error) {
+                    this.showError('Search failed. Please try again.');
+                } finally {
+                    this.searchBtn.disabled = false;
+                }
+            }
+
+            async simulateSearch(query) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                // Sample search results based on common queries
+                const sampleResults = [
+                    {
+                        id: 'mission-control-1',
+                        title: 'Mission Control Dashboard',
+                        path: 'mission-control.md',
+                        type: 'system',
+                        score: 95.2,
+                        modified: new Date().toISOString(),
+                        snippet: `Comprehensive **mission control** system with **activity feed**, task **calendar**, and global search. Built for complete operational visibility.`,
+                        size: 2138
+                    },
+                    {
+                        id: 'memory-today',
+                        title: '2026-02-06 Daily Memory', 
+                        path: 'memory/2026-02-06.md',
+                        type: 'memory',
+                        score: 88.7,
+                        modified: new Date().toISOString(),
+                        snippet: `Major Development: **Activity Feed** System Built ✅. Daniel requested an **activity feed** system inspired by OpenClaw's mission control dashboard.`,
+                        size: 1687
+                    },
+                    {
+                        id: 'activity-logger',
+                        title: 'Activity Logger',
+                        path: 'activity/logger.js',
+                        type: 'document', 
+                        score: 76.1,
+                        modified: new Date().toISOString(),
+                        snippet: `**Activity** Logger for Troy. Comprehensive logging of every significant action Troy performs, providing full visibility into autonomous operations.`,
+                        size: 5632
+                    }
+                ];
+
+                return {
+                    results: sampleResults.filter(r => 
+                        r.snippet.toLowerCase().includes(query.toLowerCase()) ||
+                        r.title.toLowerCase().includes(query.toLowerCase())
+                    ),
+                    total: sampleResults.length,
+                    query: query,
+                    stats: {
+                        search_time_ms: 250
+                    }
+                };
+            }
+
+            filterResults() {
+                // Apply filters to current results
+                this.renderResults();
+            }
+
+            renderResults() {
+                if (!this.results || this.results.results.length === 0) {
+                    this.showEmptyState(`No results found for "${this.results?.query || 'your search'}"`);
+                    return;
+                }
+
+                const { results, total, query, stats } = this.results;
+                
+                this.searchStats.textContent = 
+                    `Found ${total} results for "${query}" in ${stats.search_time_ms}ms`;
+
+                let html = '';
+                results.forEach((result, index) => {
+                    html += this.renderResult(result, index);
+                });
+
+                this.searchResults.innerHTML = html;
+            }
+
+            renderResult(result, index) {
+                const typeClass = `type-${result.type}`;
+                const modifiedDate = new Date(result.modified).toLocaleDateString();
+                const sizeFormatted = (result.size / 1024).toFixed(1) + ' KB';
+
+                return `
+                    <div class="search-result" onclick="search.showResultDetails('${result.id}')">
+                        <div class="result-header">
+                            <div>
+                                <div class="result-title">${result.title}</div>
+                                <div class="result-path">📁 ${result.path}</div>
+                            </div>
+                            <div class="result-score">Score: ${result.score}</div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="result-type ${typeClass}">${result.type}</span>
+                            <span>Modified: ${modifiedDate}</span>
+                            <span>Size: ${sizeFormatted}</span>
+                        </div>
+                        <div class="result-snippet">${result.snippet}</div>
+                        <div class="result-actions">
+                            <span class="action-btn" onclick="event.stopPropagation(); search.copyPath('${result.path}')">Copy Path</span>
+                            <span class="action-btn" onclick="event.stopPropagation(); search.searchSimilar('${result.type}')">Similar ${result.type}s</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showResultDetails(resultId) {
+                const result = this.results.results.find(r => r.id === resultId);
+                if (!result) return;
+
+                const content = `
+                    <h3>${result.title}</h3>
+                    <p><strong>Path:</strong> ${result.path}</p>
+                    <p><strong>Type:</strong> ${result.type}</p>
+                    <p><strong>Score:</strong> ${result.score}</p>
+                    <p><strong>Modified:</strong> ${new Date(result.modified).toLocaleString()}</p>
+                    <p><strong>Size:</strong> ${(result.size / 1024).toFixed(1)} KB</p>
+                    <br>
+                    <p><strong>Content Preview:</strong></p>
+                    <p style="background: #f8f9fa; padding: 15px; border-radius: 8px; white-space: pre-wrap; font-family: monospace; font-size: 12px; line-height: 1.4;">${result.snippet.replace(/<[^>]*>/g, '')}</p>
+                `;
+
+                document.getElementById('resultDetailsContent').innerHTML = content;
+                this.overlay.style.display = 'block';
+                this.resultDetails.style.display = 'block';
+            }
+
+            closeResultDetails() {
+                this.overlay.style.display = 'none';
+                this.resultDetails.style.display = 'none';
+            }
+
+            copyPath(path) {
+                navigator.clipboard.writeText(path).then(() => {
+                    // Could show a toast notification here
+                });
+            }
+
+            searchSimilar(type) {
+                this.typeFilter.value = type;
+                this.performSearch();
+            }
+
+            showLoading(message) {
+                this.searchResults.innerHTML = `<div class="loading">${message}</div>`;
+            }
+
+            showEmptyState(message) {
+                this.searchResults.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No Results</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+
+            showError(message) {
+                this.searchResults.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Error</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Global instance for onclick handlers
+        let search;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            search = new GlobalSearch();
+        });
+    </script>
+</body>
+</html>

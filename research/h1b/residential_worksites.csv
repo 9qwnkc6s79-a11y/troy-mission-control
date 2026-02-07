@@ -1,0 +1,70 @@
+Address,City,ZIP,LCA_Count,Employer,Workers,Job,Score
+507 E Howard Ln,Austin,78753,90,INFOSYS LIMITED,128,Production Support Lead - US,2
+6900 W. Parmer Lane,Austin,78729,54,Apple Inc.,54,Logistics Analyst,2
+5505 West Parmer Lane,Austin,78727,47,Apple Inc.,47,Software Development Engineer - Applications,2
+3000 Schwab Lane,Southlake,76092,24,"Charles Schwab & Company, Inc.",24,"Manager, Data Engineering",2
+701 E. Parmer Lane,Austin,78753,16,Dell Products L.P.,16,"Senior Advisor, Product Management",2
+1303 WEST WALNUT HILL LANE,IRVING,75038,13,"PHIDIMENSIONS, INC.",13,BUSINESS INTELLIGENCE ANALYST,2
+7700 W Parmer Ln,Austin,78729,13,ABAL Technologies Inc,13,Tableau Server Engineer,2
+1 UTSA Circle,San Antonio,78249,10,University of Texas at San Antonio,10,Assistant Professor of Instruction,2
+2309 Gracy Farms Ln,Austin,78758,10,SDH Systems LLC,22,Software/.Net Developer,2
+211 Quality Circle,COLLEGE STATION,77845,9,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,9,SA JC60 - Software Quality Assurance Analysts and Testers,2
+"2309 GRACY FARMS LN.,",AUSTIN,78758,9,PERSISTENT SYSTEMS LIMITED,9,SOLUTION ARCHITECT II,2
+6425 Boaz Lane,Dallas,75205,8,SOUTHERN METHODIST UNIVERSITY,8,STABLE Business Analyst,2
+1200 W Walnut Hill Ln,Irving,75038,7,First Cloud Inc,7,System Admin,2
+"3000 SCHWAB LN,",SOUTHLAKE,76092,7,PERSISTENT SYSTEMS LIMITED,7,SOFTWARE DEVELOPER II,2
+404 Royal Lane,Coppell,75019,7,"BROADRIDGE FINANCIAL SOLUTIONS, INC.",7,Senior Lead Software Engineer,2
+8401 Memorial Ln,Plano,75024,7,"S3Vision, Inc.",7,Software Developer,2
+1200 W WALNUT HILL LN,IRVING,75038,6,PVR AMERICA INC,6,Network Engineering Management Admin,2
+12535 Riata Vista Circle,Austin,78727,6,Apple Inc.,6,Software Development Engineer-Applications,2
+3000 Schwab Ln,Southlake,76092,6,WIPRO LIMITED,10,Technical Lead L1,2
+3000 TD Ameritrade Lane,SOUTHLAKE,76092,6,INFOSYS LIMITED,10,Associate Consultant - US,2
+3740 N Josey Ln,Carrollton,75007,6,Invences Inc,6,Systems Engineer,2
+4314 TEAL CT,SACHSE,75048,6,SATIN SOLUTIONS LLC,6,SOFTWARE ENGINEER,2
+5505 W Parmer Lane,Austin,78727,6,Apple Inc.,6,Quantitative Business Analyst,2
+10415 Morado Circle,Austin,78759,5,"Cox Automotive Corporate Services, LLC",5,"Manager, Software Engineering",2
+12545 Riata Vista Cir,Austin,78727,5,"Excela Solutions, Inc.",5,GIS Analysts,2
+12565 Riata Vista Circle,Austin,78727,5,Apple Inc.,5,Engineering Project/Program,2
+1300 W Walnut Hill Lane,Irving,75038,5,POMMALA TECHNOLOGY SOLUTIONS LLC,5,Software Developer,2
+1303 W Walnut Hill Ln,Irving,75038,5,SBP Consulting Inc.,6,Enterprise Application Design Engineer,2
+2271 Sage Hill Ln,Coppell,75019,5,SRI Software Solutions LLC,5,Project Manager,2
+300 E Royal Ln,Irving,75039,5,Savancys Inc,5,Quality Engineer,2
+3000 SCHWAB LN,SOUTHLAKE,76092,5,"COMPUNNEL SOFTWARE GROUP, INC",5,SOFTWARE QUALITY ASSURANCE ANALYST,2
+4055 Valley View Lane,Dallas,75244,5,"Zimperium, Inc.",5,Software Engineer,2
+7700 W PARMER LN,AUSTIN,78729,5,"CDI SOLUTIONS, INC.",5,Software Engineer,2
+7700 West Parmer Lane,Austin,78729,5,"Intelliswift Software, Inc.",5,Data Quality Analyst,2
+825 Town & Country Lane,Houston,77024,5,"Slalom, Inc.",5,Senior Architect Solution Ownership,2
+825 Town and Country Lane,Houston,77024,5,"Amazon Web Services, Inc.",14,Technical CSM III,2
+6399 Morning Star Dr Apt 602,The Colony,75056,4,Edgile LLC,5,Senior Manager,4
+5445 Legacy Dr #160,Plano,75024,4,WIPRO LIMITED,10,Techno Functional Consultant L3,3
+12440 Alameda Trace Circle,Austin,78727,4,"StarTree, Inc.",4,Site Reliability Engineer,2
+12545 Riata Vista Circle,Austin,78727,4,Apple Inc.,12,Software Development Engineer - Applications,2
+"1107 Meadow Creek Drive, Unit 311",Irving,75038,1,Galaxy IT LLC,1,Senior Consultant,6
+"6820 Preston Rd, Apt 1512, Apartment 1512",Plano,75024,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Senior Manager JC45 - Computer Systems Engineers/Architects,6
+"7922 N Glen Dr, Apartment 3046",Irving,75063,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,6
+"7932 N Glen DR, Apt 3059",Irving,75063,1,SAGE IT INC,1,Software Developer,6
+"1337, Meadow Creek Drive, Apartment 395",Irving,75038,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,SA JC60 - Software Quality Assurance Analysts and Testers,6
+"8401, Memorial Lane, Apartment 7171",Plano,75024,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,5
+"7950 N Glen Dr, APT#1110",Irving,75063,1,"Sylvamo North America, LLC",1,Manager - SAP Technical Services,5
+"8100 Memorial Lane, Apt 1109",Plano,75024,1,SAGE IT INC,1,Software Engineer,5
+"8101 Memorial Lane, Apt. 2812",Plano,75024,1,"Conduent Business Process Optimization Services, Inc.",1,Data Conversion Lead,5
+"812 West Royal Lane, Apartment 237",Irving,75039,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,5
+"818 Royal Ln, APT 364",Irving,75039,1,Harland Clarke Corp.,1,IT Developer IV,5
+"826 W Royal Ln, Apt 392",Irving,75039,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,5
+"8401, Memorial Lane, Apartment 2202",Plano,75024,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Sr. Mgr. JC45 - Information Technology Project Managers,5
+"850 LEORA LANE, APT 5222",LEWISVILLE,75056,1,EFICENS SYSTEMS INC,1,SOFTWARE (BIG DATA/CLOUD OPS) ENGINEER,5
+"8401, Memorial Lane, Apartment 7253",Plano,75024,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Senior Manager JC45 - Computer Systems Engineers/Architects,5
+"8408 Memorial Ln, Apt 5208",Plano,75024,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,5
+"667 E ROYAL LANE, APT 2067",IRVING,75039,1,EFICENS SYSTEMS INC,1,SYSTEMS ENGINEER,5
+"9400 W Parmer Ln, Apt 1526",Austin,78717,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,5
+"9400 W Parmer Ln, Apt 338",Austin,78717,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Senior Manager JC45 - Computer Systems Engineers/Architects,5
+CACTUS FLOWER CT APT 700,IRVING,75063,1,CAPGEMINI AMERICA INC,1,Applications Consultant 2,5
+"Unit No 312 2717 , Apt 0312 , W Royal Ln",Irving,75063,1,Quadrant Technologies LLC,1,Computer Systems Analyst,5
+"675 E Royal Ln, Apt 2082",Irving,75039,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Mgr. JC50 - Software Quality Assurance Analysts and Testers,5
+"8408 Memorial Ln, Apt 5210",Plano,75024,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Network and Computer Systems Administrators,5
+5963 Caruth Haven Lane Apt 5307,Dallas,75206,1,"LORSHI SYSTEMS, LLC",1,Software Developer ,5
+"2300 Kathryn Ln, Apt 3726",Plano,75025,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,5
+"4705 Tribeca Ln, Apt 2208",Plano,75024,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Computer Systems Engineers/Architects,5
+"1020 BRAND LANE, APT 627",STAFFORD,77477,1,"FIRST TIER TECHNOLOGY, LLC",1,SYSTEMS ENGINEER,5
+"12445 Alameda Trace Cir, Apt 322",Austin,78727,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Manager JC50 - Software Developers,5
+"1330 Old Spanish Trl, Apt 7101",Houston,77054,1,COGNIZANT TECHNOLOGY SOLUTIONS US CORP,1,Senior Manager JC45 - Computer Systems Engineers/Architects,5

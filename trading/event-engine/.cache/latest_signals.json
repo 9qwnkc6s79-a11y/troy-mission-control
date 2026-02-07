@@ -1,0 +1,849 @@
+{
+  "timestamp": "2026-02-01T20:31:52.115380+00:00",
+  "total_raw_signals": 49,
+  "recommendations": [
+    {
+      "ticker": "LIFE",
+      "direction": "bullish",
+      "conviction": 100,
+      "num_signals": 3,
+      "num_sources": 1,
+      "source_types": [
+        "sec"
+      ],
+      "sources": [
+        "SEC Form 4 (large purchase)",
+        "SEC Form 4 (2 insiders)"
+      ],
+      "reasoning": "Large insider purchase: WHEELER WILLIAM J bought $4,949,975 of LIFE | Large insider purchase: WHEELER WILLIAM J bought $4,949,975 of LIFE | 2 corporate insiders purchased LIFE stock (total value: $10,099,944). Insiders: Mullin Mark W., WHEELER WILLIAM J",
+      "bullish_score": 294,
+      "bearish_score": 0,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.113927+00:00",
+      "signal_count": 3
+    },
+    {
+      "ticker": "HYMC",
+      "direction": "bullish",
+      "conviction": 100,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "sec"
+      ],
+      "sources": [
+        "SEC Form 4 (large purchase)"
+      ],
+      "reasoning": "Large insider purchase: Sprott Eric bought $9,198,000 of HYMC",
+      "bullish_score": 100,
+      "bearish_score": 0,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.113975+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "PONY",
+      "direction": "bullish",
+      "conviction": 59,
+      "num_signals": 2,
+      "num_sources": 2,
+      "source_types": [
+        "earnings",
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (earnings)",
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for PONY: bullish (score: 100, 1 articles, 0 high-impact). Events: earnings | Post-earnings reaction for PONY: bullish. Weekend Round-Up: GM Motors Earnings, Tesla Triumphs And Autonomous Vehicles Make Headlines",
+      "bullish_score": 87,
+      "bearish_score": 0,
+      "confirmation_bonus": 10,
+      "timestamp": "2026-02-01T20:31:52.114181+00:00",
+      "signal_count": 2
+    },
+    {
+      "ticker": "TSLA",
+      "direction": "bearish",
+      "conviction": 57,
+      "num_signals": 2,
+      "num_sources": 2,
+      "source_types": [
+        "earnings",
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (earnings)",
+        "Alpaca News (5 articles)"
+      ],
+      "reasoning": "News sentiment for TSLA: bearish (score: -60, 5 articles, 0 high-impact). Events: earnings, merger, lawsuit | Post-earnings reaction for TSLA: bullish. Weekend Round-Up: GM Motors Earnings, Tesla Triumphs And Autonomous Vehicles Make Headlines",
+      "bullish_score": 40,
+      "bearish_score": 42,
+      "confirmation_bonus": 10,
+      "timestamp": "2026-02-01T20:31:52.114519+00:00",
+      "signal_count": 2
+    },
+    {
+      "ticker": "GM",
+      "direction": "bullish",
+      "conviction": 51,
+      "num_signals": 2,
+      "num_sources": 2,
+      "source_types": [
+        "earnings",
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (earnings)",
+        "Alpaca News (2 articles)"
+      ],
+      "reasoning": "News sentiment for GM: bullish (score: 50, 2 articles, 0 high-impact). Events: earnings, other | Post-earnings reaction for GM: bullish. Weekend Round-Up: GM Motors Earnings, Tesla Triumphs And Autonomous Vehicles Make Headlines",
+      "bullish_score": 70,
+      "bearish_score": 0,
+      "confirmation_bonus": 10,
+      "timestamp": "2026-02-01T20:31:52.114568+00:00",
+      "signal_count": 2
+    },
+    {
+      "ticker": "COST",
+      "direction": "bullish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for COST: bullish (score: 100, 1 articles, 0 high-impact). Events: earnings",
+      "bullish_score": 47,
+      "bearish_score": 0,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.113999+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "AG",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for AG: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114019+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "AXON",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for AXON: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114037+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "CDE",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for CDE: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114054+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "HL",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for HL: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114069+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "HUM",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for HUM: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114085+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "RDDT",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for RDDT: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114100+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "RGC",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for RGC: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114116+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "TTD",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for TTD: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114131+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "U",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for U: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114146+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "UNH",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for UNH: bearish (score: -100, 1 articles, 0 high-impact). Events: analyst",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114161+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "AGYS",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for AGYS: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114196+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "BABA",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for BABA: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114211+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "CRWD",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for CRWD: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114228+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "CVLT",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for CVLT: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114246+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "GIB",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for GIB: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114261+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "INTC",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for INTC: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114276+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "IONQ",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for IONQ: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114291+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "META",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for META: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114306+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "MSFT",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for MSFT: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114321+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "MU",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for MU: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114336+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "PINS",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for PINS: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114350+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "SFTBY",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for SFTBY: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114365+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "SKYT",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for SKYT: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114381+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "SNDK",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for SNDK: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114395+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "SSNLF",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for SSNLF: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114410+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "STM",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for STM: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114425+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "STX",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for STX: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114440+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "TCEHY",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for TCEHY: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114455+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "TXN",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for TXN: bearish (score: -100, 1 articles, 0 high-impact). Events: merger",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114470+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "SLV",
+      "direction": "bullish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for SLV: bullish (score: 100, 1 articles, 0 high-impact). Events: macro",
+      "bullish_score": 47,
+      "bearish_score": 0,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114486+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "DELL",
+      "direction": "bearish",
+      "conviction": 50,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (1 articles)"
+      ],
+      "reasoning": "News sentiment for DELL: bearish (score: -100, 1 articles, 0 high-impact). Events: lawsuit",
+      "bullish_score": 0,
+      "bearish_score": 47,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114501+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "GOOGL",
+      "direction": "bullish",
+      "conviction": 43,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "earnings"
+      ],
+      "sources": [
+        "Alpaca News (earnings)"
+      ],
+      "reasoning": "Post-earnings reaction for GOOGL: bullish. Weekend Round-Up: GM Motors Earnings, Tesla Triumphs And Autonomous Vehicles Make Headlines",
+      "bullish_score": 40,
+      "bearish_score": 0,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114646+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "NFLX",
+      "direction": "bullish",
+      "conviction": 33,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (2 articles)"
+      ],
+      "reasoning": "News sentiment for NFLX: bullish (score: 50, 2 articles, 0 high-impact). Events: insider, earnings",
+      "bullish_score": 30,
+      "bearish_score": 0,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114535+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "ICE",
+      "direction": "bearish",
+      "conviction": 33,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (2 articles)"
+      ],
+      "reasoning": "News sentiment for ICE: bearish (score: -50, 2 articles, 0 high-impact). Events: other, analyst",
+      "bullish_score": 0,
+      "bearish_score": 30,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114550+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "AAPL",
+      "direction": "bearish",
+      "conviction": 33,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (2 articles)"
+      ],
+      "reasoning": "News sentiment for AAPL: bearish (score: -50, 2 articles, 0 high-impact). Events: earnings, merger",
+      "bullish_score": 0,
+      "bearish_score": 30,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114584+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "HOOD",
+      "direction": "bearish",
+      "conviction": 33,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (2 articles)"
+      ],
+      "reasoning": "News sentiment for HOOD: bearish (score: -50, 2 articles, 0 high-impact). Events: insider, macro",
+      "bullish_score": 0,
+      "bearish_score": 30,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114599+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "GOLD",
+      "direction": "bearish",
+      "conviction": 33,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (2 articles)"
+      ],
+      "reasoning": "News sentiment for GOLD: bearish (score: -50, 2 articles, 0 high-impact). Events: macro, other",
+      "bullish_score": 0,
+      "bearish_score": 30,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114615+00:00",
+      "signal_count": 1
+    },
+    {
+      "ticker": "NVDA",
+      "direction": "bullish",
+      "conviction": 29,
+      "num_signals": 1,
+      "num_sources": 1,
+      "source_types": [
+        "news"
+      ],
+      "sources": [
+        "Alpaca News (3 articles)"
+      ],
+      "reasoning": "News sentiment for NVDA: bullish (score: 33, 3 articles, 0 high-impact). Events: insider, merger",
+      "bullish_score": 26,
+      "bearish_score": 0,
+      "confirmation_bonus": 0,
+      "timestamp": "2026-02-01T20:31:52.114630+00:00",
+      "signal_count": 1
+    }
+  ]
+}
