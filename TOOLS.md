@@ -36,6 +36,34 @@ Skills define _how_ tools work. This file is for _your_ specifics — the stuff 
 - CLI tool installed but no database access
 - **Alternative:** Use calendar integration for task management
 
+## Weather Intelligence ✅ ACTIVE
+
+**Location:** `weather/`
+- ✅ Multi-location monitoring (Aubrey, Boundaries locations, Dallas, Southlake)
+- ✅ Smart suggestions for workout timing, travel planning, business optimization
+- ✅ Real-time API integration with wttr.in service
+- ✅ Mission control dashboard integration
+
+**Key Features:**
+- Temperature-based workout recommendations (< 45°F = indoor)
+- Rain alerts for umbrella and business preparation  
+- Coffee shop weather impact analysis during rush hours
+- Wind warnings for outdoor signage at Boundaries locations
+
+## Workspace Optimizer ✅ ACTIVE
+
+**Location:** `organization/`  
+- ✅ Intelligent file structure analysis and project consolidation
+- ✅ Cleanup detection (old files, duplicates, large files)
+- ✅ Auto-generated documentation for missing READMEs
+- ✅ Performance optimization recommendations
+
+**Smart Features:**
+- Pattern-based project detection (boundaries, trading, ventures)
+- 3-month archival suggestions for unused files
+- Duplicate file identification and resolution
+- Size analysis and Git LFS recommendations
+
 ## Trading Systems 🤖 AVAILABLE
 
 Multiple automated trading bots discovered:
