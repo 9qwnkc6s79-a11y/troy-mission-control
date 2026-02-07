@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troy Task Calendar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.4;
+        }
+        .header {
+            background: white;
+            border-bottom: 1px solid #d2d2d7;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .view-toggle {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .view-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .view-btn.active {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .date-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-btn {
+            padding: 8px 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .current-period {
+            font-size: 18px;
+            font-weight: 500;
+            min-width: 250px;
+            text-align: center;
+        }
+        .stats {
+            font-size: 13px;
+            color: #86868b;
+        }
+        .calendar-container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .week-view {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+            gap: 1px;
+            background: #d2d2d7;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .time-slot, .day-header, .day-cell {
+            background: white;
+            padding: 12px;
+            min-height: 60px;
+        }
+        .day-header {
+            font-weight: 600;
+            text-align: center;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .day-header .day-name {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 4px;
+        }
+        .day-header .day-number {
+            font-size: 18px;
+            color: #1d1d1f;
+        }
+        .day-header.today {
+            background: #007AFF;
+            color: white;
+        }
+        .day-header.today .day-name {
+            color: rgba(255,255,255,0.8);
+        }
+        .time-slot {
+            font-size: 12px;
+            color: #86868b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-right: 1px solid #d2d2d7;
+        }
+        .day-cell {
+            position: relative;
+            min-height: 80px;
+        }
+        .task {
+            background: linear-gradient(135deg, #007AFF, #5856D6);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .task:hover {
+            transform: scale(1.02);
+        }
+        .task.cron {
+            background: linear-gradient(135deg, #34C759, #30D158);
+        }
+        .task.heartbeat {
+            background: linear-gradient(135deg, #FF9500, #FF6B35);
+        }
+        .task.reminder {
+            background: linear-gradient(135deg, #AF52DE, #BF5AF2);
+        }
+        .task-title {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .task-time {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+        .month-view {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #d2d2d7;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .month-day {
+            background: white;
+            aspect-ratio: 1;
+            padding: 8px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .month-day-number {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .month-day.other-month {
+            background: #f8f9fa;
+            color: #86868b;
+        }
+        .month-day.today {
+            background: #007AFF;
+            color: white;
+        }
+        .task-indicator {
+            width: 4px;
+            height: 4px;
+            background: #007AFF;
+            border-radius: 50%;
+            margin-bottom: 2px;
+        }
+        .task-indicator.cron { background: #34C759; }
+        .task-indicator.heartbeat { background: #FF9500; }
+        .task-indicator.reminder { background: #AF52DE; }
+        .task-details {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        .task-details h3 {
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+        .task-details .detail-row {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .task-details .label {
+            font-weight: 500;
+            color: #86868b;
+        }
+        .task-details .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #86868b;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #86868b;
+        }
+        .empty-week {
+            text-align: center;
+            padding: 40px;
+            color: #86868b;
+            grid-column: 1 / -1;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🗓️ Troy Task Calendar</h1>
+        <div class="nav-controls">
+            <div class="view-toggle">
+                <button class="view-btn active" id="weekBtn">Week</button>
+                <button class="view-btn" id="monthBtn">Month</button>
+            </div>
+            <div class="date-nav">
+                <button class="nav-btn" id="prevBtn">← Previous</button>
+                <div class="current-period" id="currentPeriod">Loading...</div>
+                <button class="nav-btn" id="nextBtn">Next →</button>
+            </div>
+            <div class="stats" id="stats">Loading...</div>
+        </div>
+    </div>
+
+    <div class="calendar-container" id="calendarContainer">
+        <div class="loading">Loading scheduled tasks...</div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="task-details" id="taskDetails">
+        <button class="close-btn" id="closeBtn">×</button>
+        <div id="taskDetailsContent"></div>
+    </div>
+
+    <script>
+        class TaskCalendar {
+            constructor() {
+                this.currentDate = new Date();
+                this.viewMode = 'week';
+                this.tasks = [];
+                this.initializeElements();
+                this.setupEventListeners();
+                this.loadTasks();
+            }
+
+            initializeElements() {
+                this.container = document.getElementById('calendarContainer');
+                this.periodElement = document.getElementById('currentPeriod');
+                this.statsElement = document.getElementById('stats');
+                this.weekBtn = document.getElementById('weekBtn');
+                this.monthBtn = document.getElementById('monthBtn');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.overlay = document.getElementById('overlay');
+                this.taskDetails = document.getElementById('taskDetails');
+                this.closeBtn = document.getElementById('closeBtn');
+            }
+
+            setupEventListeners() {
+                this.weekBtn.addEventListener('click', () => this.setViewMode('week'));
+                this.monthBtn.addEventListener('click', () => this.setViewMode('month'));
+                this.prevBtn.addEventListener('click', () => this.navigate(-1));
+                this.nextBtn.addEventListener('click', () => this.navigate(1));
+                this.closeBtn.addEventListener('click', () => this.closeTaskDetails());
+                this.overlay.addEventListener('click', () => this.closeTaskDetails());
+            }
+
+            async loadTasks() {
+                try {
+                    // For now, load sample data based on the cron jobs we know exist
+                    this.tasks = await this.loadSampleData();
+                    this.render();
+                } catch (error) {
+                    this.showError('Failed to load scheduled tasks');
+                }
+            }
+
+            async loadSampleData() {
+                // Sample data based on actual cron jobs
+                const now = new Date();
+                return [
+                    {
+                        id: 'ac0c5eee-30cd-40ce-92da-600e0c33bf2d',
+                        title: 'Little Elm Store Reminders',
+                        type: 'cron',
+                        date: new Date('2027-01-26T09:00:00'),
+                        time: '09:00',
+                        description: 'Pay Mustang water bill, Cancel Viasat internet',
+                        status: 'enabled',
+                        schedule: '0 9 26 1 *',
+                        lastRun: 'Jan 26, 2025'
+                    },
+                    {
+                        id: 'de765e96-c608-4418-b38c-e3cd1f39a9f7',
+                        title: 'VivPatch Domain Registration',
+                        type: 'cron',
+                        date: new Date('2027-02-01T09:00:00'),
+                        time: '09:00',
+                        description: 'Register vivpatch.com on Cloudflare with Gmail account',
+                        status: 'enabled',
+                        schedule: '0 9 1 2 *',
+                        lastRun: 'Feb 1, 2025'
+                    },
+                    // Add some recurring heartbeat tasks
+                    {
+                        id: 'heartbeat-instagram',
+                        title: 'Instagram Check',
+                        type: 'heartbeat',
+                        date: new Date(now.getTime() + 24 * 60 * 60 * 1000), // Tomorrow
+                        time: '10:00',
+                        description: 'Check Instagram comments and engagement',
+                        status: 'rotating',
+                        schedule: 'Heartbeat rotation'
+                    },
+                    {
+                        id: 'heartbeat-email',
+                        title: 'Email Check',
+                        type: 'heartbeat', 
+                        date: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000), // Day after tomorrow
+                        time: '14:00',
+                        description: 'Check for urgent unread emails',
+                        status: 'rotating',
+                        schedule: 'Heartbeat rotation'
+                    }
+                ];
+            }
+
+            setViewMode(mode) {
+                this.viewMode = mode;
+                this.weekBtn.classList.toggle('active', mode === 'week');
+                this.monthBtn.classList.toggle('active', mode === 'month');
+                this.render();
+            }
+
+            navigate(direction) {
+                if (this.viewMode === 'week') {
+                    this.currentDate.setDate(this.currentDate.getDate() + (direction * 7));
+                } else {
+                    this.currentDate.setMonth(this.currentDate.getMonth() + direction);
+                }
+                this.render();
+            }
+
+            render() {
+                if (this.viewMode === 'week') {
+                    this.renderWeekView();
+                } else {
+                    this.renderMonthView();
+                }
+                this.updatePeriodLabel();
+                this.updateStats();
+            }
+
+            renderWeekView() {
+                const weekStart = this.getWeekStart(this.currentDate);
+                const weekTasks = this.getTasksInDateRange(weekStart, new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000));
+
+                let html = '<div class="week-view">';
+                
+                // Empty cell for time column header
+                html += '<div class="time-slot"></div>';
+                
+                // Day headers
+                for (let i = 0; i < 7; i++) {
+                    const day = new Date(weekStart);
+                    day.setDate(weekStart.getDate() + i);
+                    const isToday = this.isSameDay(day, new Date());
+                    
+                    html += `
+                        <div class="day-header ${isToday ? 'today' : ''}">
+                            <div class="day-name">${day.toLocaleDateString('en', {weekday: 'short'})}</div>
+                            <div class="day-number">${day.getDate()}</div>
+                        </div>
+                    `;
+                }
+
+                // Time slots and tasks
+                const hours = [9, 10, 11, 12, 13, 14, 15, 16, 17];
+                
+                for (const hour of hours) {
+                    html += `<div class="time-slot">${hour}:00</div>`;
+                    
+                    for (let i = 0; i < 7; i++) {
+                        const day = new Date(weekStart);
+                        day.setDate(weekStart.getDate() + i);
+                        
+                        const dayTasks = weekTasks.filter(task => 
+                            this.isSameDay(task.date, day) && 
+                            parseInt(task.time.split(':')[0]) === hour
+                        );
+                        
+                        html += '<div class="day-cell">';
+                        dayTasks.forEach(task => {
+                            html += `
+                                <div class="task ${task.type}" onclick="calendar.showTaskDetails('${task.id}')">
+                                    <div class="task-title">${task.title}</div>
+                                    <div class="task-time">${task.time}</div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                    }
+                }
+
+                if (weekTasks.length === 0) {
+                    html += '<div class="empty-week">No scheduled tasks this week</div>';
+                }
+
+                html += '</div>';
+                this.container.innerHTML = html;
+            }
+
+            renderMonthView() {
+                const monthStart = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+                const firstDayOfWeek = monthStart.getDay();
+                const startDate = new Date(monthStart);
+                startDate.setDate(startDate.getDate() - firstDayOfWeek);
+                
+                const monthTasks = this.getTasksInDateRange(startDate, new Date(startDate.getTime() + 42 * 24 * 60 * 60 * 1000));
+
+                let html = '<div class="month-view">';
+                
+                // Day headers
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                dayNames.forEach(day => {
+                    html += `<div class="day-header">${day}</div>`;
+                });
+
+                // Calendar days
+                for (let i = 0; i < 42; i++) {
+                    const day = new Date(startDate);
+                    day.setDate(startDate.getDate() + i);
+                    
+                    const isCurrentMonth = day.getMonth() === this.currentDate.getMonth();
+                    const isToday = this.isSameDay(day, new Date());
+                    
+                    const dayTasks = monthTasks.filter(task => this.isSameDay(task.date, day));
+                    
+                    html += `
+                        <div class="month-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''}" 
+                             onclick="calendar.showDayTasks('${day.toISOString()}')">
+                            <div class="month-day-number">${day.getDate()}</div>
+                    `;
+                    
+                    dayTasks.forEach(task => {
+                        html += `<div class="task-indicator ${task.type}"></div>`;
+                    });
+                    
+                    html += '</div>';
+                }
+
+                html += '</div>';
+                this.container.innerHTML = html;
+            }
+
+            updatePeriodLabel() {
+                if (this.viewMode === 'week') {
+                    const weekStart = this.getWeekStart(this.currentDate);
+                    const weekEnd = new Date(weekStart);
+                    weekEnd.setDate(weekStart.getDate() + 6);
+                    
+                    this.periodElement.textContent = 
+                        `${weekStart.toLocaleDateString('en', {month: 'short', day: 'numeric'})} - ${weekEnd.toLocaleDateString('en', {month: 'short', day: 'numeric', year: 'numeric'})}`;
+                } else {
+                    this.periodElement.textContent = 
+                        this.currentDate.toLocaleDateString('en', {month: 'long', year: 'numeric'});
+                }
+            }
+
+            updateStats() {
+                const upcomingTasks = this.tasks.filter(task => task.date > new Date()).length;
+                const enabledCron = this.tasks.filter(task => task.type === 'cron' && task.status === 'enabled').length;
+                
+                this.statsElement.textContent = 
+                    `${upcomingTasks} upcoming tasks • ${enabledCron} active cron jobs`;
+            }
+
+            showTaskDetails(taskId) {
+                const task = this.tasks.find(t => t.id === taskId);
+                if (!task) return;
+
+                const content = `
+                    <h3>${task.title}</h3>
+                    <div class="detail-row"><span class="label">Type:</span> ${task.type.toUpperCase()}</div>
+                    <div class="detail-row"><span class="label">Date:</span> ${task.date.toLocaleDateString()}</div>
+                    <div class="detail-row"><span class="label">Time:</span> ${task.time}</div>
+                    <div class="detail-row"><span class="label">Status:</span> ${task.status}</div>
+                    <div class="detail-row"><span class="label">Schedule:</span> ${task.schedule}</div>
+                    ${task.lastRun ? `<div class="detail-row"><span class="label">Last Run:</span> ${task.lastRun}</div>` : ''}
+                    <div class="detail-row"><span class="label">Description:</span> ${task.description}</div>
+                `;
+
+                document.getElementById('taskDetailsContent').innerHTML = content;
+                this.overlay.style.display = 'block';
+                this.taskDetails.style.display = 'block';
+            }
+
+            closeTaskDetails() {
+                this.overlay.style.display = 'none';
+                this.taskDetails.style.display = 'none';
+            }
+
+            // Utility functions
+            getWeekStart(date) {
+                const start = new Date(date);
+                const day = start.getDay();
+                start.setDate(start.getDate() - day);
+                start.setHours(0, 0, 0, 0);
+                return start;
+            }
+
+            isSameDay(date1, date2) {
+                return date1.toDateString() === date2.toDateString();
+            }
+
+            getTasksInDateRange(start, end) {
+                return this.tasks.filter(task => task.date >= start && task.date <= end);
+            }
+
+            showError(message) {
+                this.container.innerHTML = `
+                    <div class="loading" style="color: #c62828;">
+                        <h3>Error</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Global instance for onclick handlers
+        let calendar;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            calendar = new TaskCalendar();
+        });
+    </script>
+</body>
+</html>

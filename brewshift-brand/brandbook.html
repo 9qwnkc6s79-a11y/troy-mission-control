@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Brewshift Brand Book</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #1a1a1a;
+    line-height: 1.6;
+    font-size: 11pt;
+  }
+  
+  .cover {
+    height: 100vh;
+    background: #0F2B3C;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    page-break-after: always;
+  }
+  
+  .cover h1 {
+    font-size: 64pt;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  
+  .cover .subtitle {
+    font-size: 16pt;
+    font-weight: 500;
+    color: #C77B3C;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  
+  .cover .version {
+    font-size: 10pt;
+    color: rgba(255,255,255,0.4);
+    margin-top: 40px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  
+  .page {
+    padding: 60px;
+    page-break-after: always;
+    min-height: 100vh;
+  }
+  
+  h2 {
+    font-size: 28pt;
+    font-weight: 800;
+    color: #0F2B3C;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #C77B3C;
+  }
+  
+  h3 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #0F2B3C;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-top: 28px;
+    margin-bottom: 10px;
+  }
+  
+  h4 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #C77B3C;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 20px;
+    margin-bottom: 6px;
+  }
+  
+  p { margin-bottom: 10px; }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 10pt;
+  }
+  
+  th {
+    background: #0F2B3C;
+    color: white;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 9pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #E5E7EB;
+    vertical-align: top;
+  }
+  
+  tr:nth-child(even) { background: #F9FAFB; }
+  
+  .swatch-row {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+    min-width: 200px;
+  }
+  
+  .swatch-color {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  
+  .swatch-info { font-size: 10pt; }
+  .swatch-name { font-weight: 700; }
+  .swatch-hex { color: #666; font-family: monospace; }
+  
+  .example-good { color: #22C55E; font-weight: 600; }
+  .example-bad { color: #EF4444; font-weight: 600; }
+  
+  .tagline-box {
+    background: #0F2B3C;
+    color: white;
+    padding: 24px 32px;
+    border-radius: 12px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  
+  .tagline-box .tagline {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #C77B3C;
+  }
+  
+  .tagline-box .label {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+  }
+  
+  ul { margin: 8px 0 8px 24px; }
+  li { margin-bottom: 4px; }
+  
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  
+  .card {
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  code {
+    font-family: 'SF Mono', Menlo, monospace;
+    background: #F3F4F6;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 9.5pt;
+  }
+
+  .btn-demo {
+    display: inline-block;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 4px 8px 4px 0;
+    border: none;
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>Brewshift</h1>
+  <div class="subtitle">Brand Book</div>
+  <div class="version">Version 1.0 — January 2026</div>
+</div>
+
+<!-- 1. BRAND OVERVIEW -->
+<div class="page">
+  <h2>1. Brand Overview</h2>
+  
+  <h3>What Brewshift Is</h3>
+  <p>The operating system for coffee shop operations. Training, accountability, and performance — all in one platform.</p>
+  
+  <h3>Tagline</h3>
+  <div class="tagline-box">
+    <div class="label">Primary Tagline</div>
+    <div class="tagline">"Run every shift like your best shift."</div>
+  </div>
+  
+  <div class="two-col" style="margin-top:16px">
+    <div class="card">
+      <h4>Alt Taglines</h4>
+      <ul>
+        <li>"Your coffee shop's operating system."</li>
+        <li>"Train. Track. Transform."</li>
+        <li>"Shift the way you operate."</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Product Names</h4>
+      <ul>
+        <li><strong>Brewshift Academy</strong> — Training</li>
+        <li><strong>Brewshift Logbook</strong> — Checklists</li>
+        <li><strong>Brewshift Pulse</strong> — Dashboard</li>
+        <li><strong>Barista Brain</strong> — AI Assistant</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Brand Personality</h3>
+  <table>
+    <tr><th>Trait</th><th>Description</th></tr>
+    <tr><td><strong>Professional</strong></td><td>Trusted by owners who take their business seriously</td></tr>
+    <tr><td><strong>Efficient</strong></td><td>Respects your time — no bloat, no fluff</td></tr>
+    <tr><td><strong>Warm</strong></td><td>Coffee industry at heart — approachable, not corporate</td></tr>
+    <tr><td><strong>Empowering</strong></td><td>Makes your team better, not just more watched</td></tr>
+    <tr><td><strong>Modern</strong></td><td>Clean, fast, feels like the future</td></tr>
+  </table>
+
+  <h3>Voice & Tone</h3>
+  <p><strong>Confident but not arrogant.</strong> Direct. Supportive. Occasional wit — coffee puns welcome but never forced.</p>
+  <p><span class="example-good">✅</span> "Your opening checklist, verified with photos. No more trust-me-I-did-it."</p>
+  <p><span class="example-good">✅</span> "New hire to bar-ready in half the time."</p>
+  <p><span class="example-bad">❌</span> "Leverage synergistic operational efficiencies across your retail footprint."</p>
+  <p><span class="example-bad">❌</span> "We're revolutionizing the coffee industry with AI."</p>
+</div>
+
+<!-- 2. LOGO -->
+<div class="page">
+  <h2>2. Logo System</h2>
+  
+  <h3>Primary Logo Mark</h3>
+  <p><strong>Concept:</strong> A coffee cup silhouette integrated with an upward shift arrow — representing operational excellence and upward momentum.</p>
+  
+  <h4>Design Specifications</h4>
+  <ul>
+    <li>Geometric / minimal style</li>
+    <li>Coffee cup viewed from slight angle, steam or rim forming upward arrow (⬆️ or ↗️)</li>
+    <li>Must work at 16×16 favicon AND 512×512 app icon</li>
+    <li>Single-color construction (works in one color)</li>
+    <li>Rounded corners on icon container (app icon style)</li>
+  </ul>
+  
+  <h4>Alternate Concept</h4>
+  <p>Abstract "B" + "S" monogram where letterforms suggest a coffee cup and shift arrow.</p>
+  
+  <h3>Logo Variations</h3>
+  <table>
+    <tr><th>Variation</th><th>Usage</th></tr>
+    <tr><td><strong>Icon Only</strong></td><td>App icon, favicon, avatar</td></tr>
+    <tr><td><strong>Icon + Wordmark (Horizontal)</strong></td><td>Nav bars, email headers</td></tr>
+    <tr><td><strong>Wordmark Only</strong></td><td>When icon is already present</td></tr>
+    <tr><td><strong>Icon + Wordmark (Stacked)</strong></td><td>Login screens, splash pages</td></tr>
+  </table>
+
+  <h3>Wordmark</h3>
+  <p><strong>Font:</strong> Plus Jakarta Sans — Extra Bold (800)</p>
+  <p><strong>Style:</strong> ALL CAPS, letter-spacing -0.02em</p>
+  <p><strong>Treatment:</strong> Single color, or "Brew" bold + "shift" regular weight for hierarchy</p>
+  
+  <h3>Minimum Sizes</h3>
+  <table>
+    <tr><th>Format</th><th>Minimum</th></tr>
+    <tr><td>Icon only</td><td>24px</td></tr>
+    <tr><td>Icon + wordmark</td><td>120px wide</td></tr>
+    <tr><td>Favicon</td><td>16×16 (simplified icon)</td></tr>
+  </table>
+</div>
+
+<!-- 3. COLORS -->
+<div class="page">
+  <h2>3. Color Palette</h2>
+  
+  <h3>Primary Colors</h3>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#0F2B3C"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Navy</div>
+        <div class="swatch-hex">#0F2B3C</div>
+        <div>Sidebar, nav, primary buttons</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FFFFFF; border:1px solid #ddd"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">White</div>
+        <div class="swatch-hex">#FFFFFF</div>
+        <div>Cards, text on dark</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1E3A4C"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Slate</div>
+        <div class="swatch-hex">#1E3A4C</div>
+        <div>Hover states, secondary</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Accent Colors</h3>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#C77B3C"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Copper</div>
+        <div class="swatch-hex">#C77B3C</div>
+        <div>CTAs, highlights, active states</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F5F0E8"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Warm Cream</div>
+        <div class="swatch-hex">#F5F0E8</div>
+        <div>Page backgrounds, light base</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2C1810"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Espresso</div>
+        <div class="swatch-hex">#2C1810</div>
+        <div>Dark text on light</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Semantic Colors</h3>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#22C55E"></div>
+      <div class="swatch-info"><div class="swatch-name">Success</div><div class="swatch-hex">#22C55E</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F59E0B"></div>
+      <div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#F59E0B</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#EF4444"></div>
+      <div class="swatch-info"><div class="swatch-name">Danger</div><div class="swatch-hex">#EF4444</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#3B82F6"></div>
+      <div class="swatch-info"><div class="swatch-name">Info</div><div class="swatch-hex">#3B82F6</div></div>
+    </div>
+  </div>
+
+  <h3>Why These Colors?</h3>
+  <ul>
+    <li><strong>Navy</strong> — Trust, professionalism, reliability. Keeps the proven dark UI.</li>
+    <li><strong>Copper</strong> — Warmth, coffee, premium feel. Replaces red (red feels like an error in an ops tool).</li>
+    <li><strong>Cream</strong> — Organic warmth, coffee shop aesthetic. Not sterile white.</li>
+  </ul>
+
+  <h3>Color Ratios</h3>
+  <p>Navy + White = 80% of UI • Copper = 10% (CTAs) • Semantic = 5% • Cream = 5%</p>
+</div>
+
+<!-- 4. TYPOGRAPHY -->
+<div class="page">
+  <h2>4. Typography</h2>
+  
+  <h3>Primary Font: Plus Jakarta Sans</h3>
+  <p>Modern geometric sans-serif with warmth. Already loaded in the application.</p>
+  
+  <table>
+    <tr><th>Style</th><th>Weight</th><th>Usage</th></tr>
+    <tr><td><strong>Extra Bold</strong></td><td>800</td><td>Headings, logo, page titles</td></tr>
+    <tr><td><strong>Bold</strong></td><td>700</td><td>Sub-headings, card titles, nav items</td></tr>
+    <tr><td><strong>Semibold</strong></td><td>600</td><td>Labels, badges, button text</td></tr>
+    <tr><td><strong>Medium</strong></td><td>500</td><td>Body text, descriptions</td></tr>
+    <tr><td><strong>Regular</strong></td><td>400</td><td>Secondary text, metadata</td></tr>
+  </table>
+
+  <h3>Type Scale</h3>
+  <table>
+    <tr><th>Element</th><th>Size</th><th>Weight</th><th>Case</th></tr>
+    <tr><td>Page Title</td><td>32–40px</td><td>800</td><td>UPPERCASE</td></tr>
+    <tr><td>Section Header</td><td>20–24px</td><td>700–800</td><td>UPPERCASE</td></tr>
+    <tr><td>Card Title</td><td>16–18px</td><td>700</td><td>UPPERCASE</td></tr>
+    <tr><td>Body</td><td>14–16px</td><td>400–500</td><td>Sentence case</td></tr>
+    <tr><td>Caption / Label</td><td>10–12px</td><td>600–700</td><td>UPPERCASE, wide tracking</td></tr>
+    <tr><td>Badge</td><td>10–11px</td><td>700</td><td>UPPERCASE</td></tr>
+  </table>
+
+  <h3>Iconography — Lucide React</h3>
+  <p>Clean, consistent stroke-based icons. Already in use in the application.</p>
+  <table>
+    <tr><th>Feature</th><th>Icon Name</th><th>Size</th></tr>
+    <tr><td>Training</td><td>graduation-cap</td><td>20–24px</td></tr>
+    <tr><td>Checklists</td><td>clipboard-check</td><td>20–24px</td></tr>
+    <tr><td>Performance</td><td>trending-up</td><td>20–24px</td></tr>
+    <tr><td>Team</td><td>users</td><td>20–24px</td></tr>
+    <tr><td>AI Features</td><td>sparkles</td><td>20–24px</td></tr>
+  </table>
+</div>
+
+<!-- 5. COMPONENTS -->
+<div class="page">
+  <h2>5. UI Components</h2>
+
+  <h3>Buttons</h3>
+  <div style="margin: 16px 0">
+    <span class="btn-demo" style="background:#0F2B3C">Primary</span>
+    <span class="btn-demo" style="background:#C77B3C">Accent</span>
+    <span class="btn-demo" style="background:white; color:#0F2B3C; border:1px solid #0F2B3C">Secondary</span>
+    <span class="btn-demo" style="background:#EF4444">Danger</span>
+  </div>
+  
+  <table>
+    <tr><th>Type</th><th>Background</th><th>Text</th><th>Usage</th></tr>
+    <tr><td>Primary</td><td>Navy <code>#0F2B3C</code></td><td>White</td><td>Main actions</td></tr>
+    <tr><td>Accent</td><td>Copper <code>#C77B3C</code></td><td>White</td><td>CTAs, highlights</td></tr>
+    <tr><td>Secondary</td><td>White</td><td>Navy</td><td>Cancel, back</td></tr>
+    <tr><td>Danger</td><td>Red <code>#EF4444</code></td><td>White</td><td>Delete, deactivate</td></tr>
+  </table>
+
+  <h3>Cards</h3>
+  <ul>
+    <li>Background: White <code>#FFFFFF</code></li>
+    <li>Border radius: 12px</li>
+    <li>Shadow: <code>0 1px 3px rgba(0,0,0,0.08)</code></li>
+    <li>Padding: 20–24px</li>
+  </ul>
+
+  <h3>Form Inputs</h3>
+  <ul>
+    <li>Background: <code>#F9FAFB</code></li>
+    <li>Border: 1px <code>#E5E7EB</code>, radius 8px</li>
+    <li>Focus: 2px ring in Navy at 10% opacity</li>
+  </ul>
+
+  <h3>Role Badges</h3>
+  <div style="margin: 12px 0">
+    <span class="badge" style="background:#7C3AED; color:white">Admin</span>
+    <span class="badge" style="background:#2563EB; color:white">Manager</span>
+    <span class="badge" style="background:#16A34A; color:white">Trainer</span>
+    <span class="badge" style="background:#D97706; color:white">Trainee</span>
+  </div>
+</div>
+
+<!-- 6. POSITIONING -->
+<div class="page">
+  <h2>6. Positioning</h2>
+
+  <h3>One-Liner</h3>
+  <div class="tagline-box">
+    <div class="tagline" style="font-size:14pt">"Brewshift is the all-in-one operations platform for coffee shops — training, photo-verified checklists, Toast POS data, and AI auditing in a single app."</div>
+  </div>
+
+  <h3>Elevator Pitch (30 Seconds)</h3>
+  <div class="card" style="margin:16px 0; background:#F5F0E8">
+    <p>"Coffee shop owners spend their days juggling training, checklists, and accountability — usually with a binder and hope. Brewshift replaces all of that with a single app.</p>
+    <p>New hires train themselves through interactive modules. Opening and closing checklists are photo-verified and AI-audited. Toast POS data flows in automatically so you can see sales, turn times, and who's on shift — without being there.</p>
+    <p>It takes 5 minutes to set up and your team can start using it the same day."</p>
+  </div>
+
+  <h3>Key Differentiators</h3>
+  <table>
+    <tr><th>#</th><th>Differentiator</th></tr>
+    <tr><td>1</td><td><strong>Purpose-built for coffee shops</strong> — not generic restaurant software</td></tr>
+    <tr><td>2</td><td><strong>Toast POS integration</strong> — live sales, labor, turn times (no one else does this)</td></tr>
+    <tr><td>3</td><td><strong>Photo verification + AI auditing</strong> — actual proof, not checkboxes</td></tr>
+    <tr><td>4</td><td><strong>Training + ops in one app</strong> — competitors do one or the other</td></tr>
+    <tr><td>5</td><td><strong>Self-service setup in 5 minutes</strong> — no sales calls, no implementation fee</td></tr>
+  </table>
+
+  <h3>Plan Names</h3>
+  <table>
+    <tr><th>Plan</th><th>Target</th></tr>
+    <tr><td><strong>Starter</strong></td><td>Solo owner, basic features</td></tr>
+    <tr><td><strong>Pro</strong></td><td>Full platform, Toast integration</td></tr>
+    <tr><td><strong>Scale</strong></td><td>Multi-unit, advanced analytics</td></tr>
+  </table>
+</div>
+
+<!-- 7. DOMAIN & LEGAL -->
+<div class="page">
+  <h2>7. Domain & Legal</h2>
+
+  <h3>Domain Strategy</h3>
+  <table>
+    <tr><th>Domain</th><th>Status</th><th>Use</th></tr>
+    <tr><td><code>brewshift.app</code></td><td><strong>Buy now</strong></td><td>Primary product URL</td></tr>
+    <tr><td><code>brewshift.com</code></td><td>Expiring Feb 2 — acquire</td><td>Redirect → .app (eventually primary)</td></tr>
+    <tr><td><code>brewshift.io</code></td><td>Available</td><td>Hold / redirect</td></tr>
+    <tr><td><code>getbrewshift.com</code></td><td>Available</td><td>Marketing alternate</td></tr>
+  </table>
+
+  <h3>URL Structure (Future)</h3>
+  <ul>
+    <li><code>brewshift.app</code> — Landing page / marketing</li>
+    <li><code>app.brewshift.app</code> — The product</li>
+    <li><code>docs.brewshift.app</code> — Help center</li>
+    <li><code>{shopname}.brewshift.app</code> — Per-shop subdomains</li>
+  </ul>
+
+  <h3>Trademark</h3>
+  <ul>
+    <li><strong>"Brewshift"</strong> is a <strong>coined compound word</strong> — the strongest category of trademark protection</li>
+    <li>File in <strong>Class 42</strong> (SaaS/software) and <strong>Class 9</strong> (downloadable software)</li>
+    <li>No existing registrations found in USPTO</li>
+    <li>File <strong>intent-to-use (ITU)</strong> application before public launch</li>
+    <li>No evidence of active business use of "Brewshift" anywhere</li>
+  </ul>
+
+  <h3>Copyright</h3>
+  <p>© 2026 Brewshift, LLC. All training content, UI design, and code are original works.</p>
+
+  <h3>Photography & Imagery</h3>
+  <ul>
+    <li>Authentic coffee shop environments — real shops, not stock</li>
+    <li>Warm lighting — golden hour, natural light</li>
+    <li>People in action — baristas making drinks, not posing</li>
+    <li>No heavy filters — slight warm grade is fine</li>
+  </ul>
+</div>
+
+</body>
+</html>

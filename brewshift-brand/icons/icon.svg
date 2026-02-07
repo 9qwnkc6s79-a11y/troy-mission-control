@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <clipPath id="roundedCorners">
+      <rect width="1024" height="1024" rx="180" ry="180"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="180" ry="180" fill="#0F2B3C"/>
+  
+  <g clip-path="url(#roundedCorners)">
+    <!-- Coffee Cup Body -->
+    <path d="M310 340 L340 720 Q345 760 385 760 L640 760 Q680 760 685 720 L715 340 Z" 
+          fill="none" stroke="#C77B3C" stroke-width="42" stroke-linejoin="round" stroke-linecap="round"/>
+    
+    <!-- Cup Handle -->
+    <path d="M715 400 Q800 400 800 500 Q800 600 715 600" 
+          fill="none" stroke="#C77B3C" stroke-width="42" stroke-linecap="round"/>
+    
+    <!-- Upward Arrow (steam/shift) emerging from cup -->
+    <g transform="translate(512, 160)">
+      <!-- Arrow shaft -->
+      <line x1="0" y1="130" x2="0" y2="-20" stroke="#C77B3C" stroke-width="44" stroke-linecap="round"/>
+      <!-- Arrow head -->
+      <polyline points="-65,40 0,-30 65,40" fill="none" stroke="#C77B3C" stroke-width="44" stroke-linejoin="round" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

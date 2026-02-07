@@ -1,0 +1,35 @@
+{
+  "name": "troy-mission-control",
+  "version": "1.0.0",
+  "description": "Complete operational visibility and control system for AI agents",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build complete'",
+    "start": "serve -l 3000",
+    "dev": "serve -l 3000"
+  },
+  "keywords": [
+    "ai",
+    "monitoring",
+    "dashboard",
+    "activity-tracking",
+    "mission-control"
+  ],
+  "author": "Daniel Keene",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "repository": {
+    "type": "git", 
+    "url": "git+https://github.com/9qwnkc6s79-a11y/troy-mission-control.git"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/9qwnkc6s79-a11y/troy-mission-control/issues"
+  },
+  "homepage": "https://github.com/9qwnkc6s79-a11y/troy-mission-control#readme",
+  "dependencies": {
+    "convex": "^1.31.7"
+  }
+}

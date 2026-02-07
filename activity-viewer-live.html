@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Activity Feed | Mission Control</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+        
+        .header {
+            margin-bottom: 32px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #10b981;
+            margin-top: 4px;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .activity-feed {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .activity-item {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            font-size: 13px;
+            color: #6b7280;
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+        
+        .activity-description {
+            font-size: 14px;
+            color: #a1a1a1;
+            margin-bottom: 8px;
+        }
+        
+        .activity-metadata {
+            font-size: 12px;
+            color: #6b7280;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .category-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .category-system { background: rgba(59, 130, 246, 0.1); color: #93c5fd; }
+        .category-external { background: rgba(16, 185, 129, 0.1); color: #6ee7b7; }
+        .category-internal { background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+        .category-design { background: rgba(139, 92, 246, 0.1); color: #c4b5fd; }
+        
+        .loading {
+            padding: 60px 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .error {
+            padding: 60px 20px;
+            text-align: center;
+            color: #ef4444;
+        }
+    </style>
+    <script type="module">
+        import { ConvexHttpClient } from "https://cdn.skypack.dev/convex/browser";
+        
+        const convex = new ConvexHttpClient("https://unexcised-tracy-tuliplike.ngrok-free.dev");
+        let lastUpdate = Date.now();
+        
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        function formatCategory(category) {
+            return `<span class="category-badge category-${category}">${category}</span>`;
+        }
+        
+        function formatMetadata(metadata) {
+            if (!metadata || Object.keys(metadata).length === 0) return '';
+            return JSON.stringify(metadata, null, 2);
+        }
+        
+        async function loadActivities() {
+            try {
+                const activities = await convex.query("activities:getRecent", { limit: 50 });
+                
+                const feedElement = document.querySelector('.activity-feed');
+                
+                if (activities.length === 0) {
+                    feedElement.innerHTML = '<div class="loading">No activities logged yet...</div>';
+                    return;
+                }
+                
+                const html = activities.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-time">${formatTime(activity.timestamp)}</div>
+                        <div class="activity-content">
+                            <div class="activity-title">
+                                ${formatCategory(activity.category)} ${activity.action}
+                            </div>
+                            <div class="activity-description">${activity.description}</div>
+                            ${activity.metadata ? `<div class="activity-metadata">${formatMetadata(activity.metadata)}</div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+                
+                feedElement.innerHTML = html;
+                lastUpdate = Date.now();
+                
+            } catch (error) {
+                document.querySelector('.activity-feed').innerHTML = `
+                    <div class="error">
+                        Connection failed: ${error.message}<br>
+                        <small>Make sure Convex is running: npx convex dev</small>
+                    </div>
+                `;
+            }
+        }
+        
+        // Initial load
+        loadActivities();
+        
+        // Auto-refresh every 2 seconds for live updates
+        setInterval(loadActivities, 2000);
+        
+        // Update last refresh time in header
+        setInterval(() => {
+            const elapsed = Math.floor((Date.now() - lastUpdate) / 1000);
+            const indicator = document.querySelector('.status-indicator');
+            indicator.innerHTML = `<div class="live-dot"></div> Live • Updated ${elapsed}s ago`;
+        }, 1000);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Live Activity Feed</h1>
+            <div class="status-indicator">
+                <div class="live-dot"></div> Live • Connecting...
+            </div>
+        </div>
+        
+        <div class="activity-feed">
+            <div class="loading">Loading activities...</div>
+        </div>
+    </div>
+</body>
+</html>

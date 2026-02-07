@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2732" height="2732" viewBox="0 0 2732 2732">
+  <!-- Background -->
+  <rect width="2732" height="2732" fill="#0F2B3C"/>
+  
+  <!-- Centered Coffee Cup + Arrow (scaled up) -->
+  <g transform="translate(1366, 1366) scale(2.2)">
+    <!-- Coffee Cup Body -->
+    <path d="M-202 -26 L-172 354 Q-167 394 -127 394 L128 394 Q168 394 173 354 L203 -26 Z" 
+          fill="none" stroke="#C77B3C" stroke-width="42" stroke-linejoin="round" stroke-linecap="round"/>
+    
+    <!-- Cup Handle -->
+    <path d="M203 34 Q288 34 288 134 Q288 234 203 234" 
+          fill="none" stroke="#C77B3C" stroke-width="42" stroke-linecap="round"/>
+    
+    <!-- Upward Arrow -->
+    <g transform="translate(0, -206)">
+      <line x1="0" y1="130" x2="0" y2="-20" stroke="#C77B3C" stroke-width="44" stroke-linecap="round"/>
+      <polyline points="-65,40 0,-30 65,40" fill="none" stroke="#C77B3C" stroke-width="44" stroke-linejoin="round" stroke-linecap="round"/>
+    </g>
+  </g>
+  
+  <!-- Wordmark below -->
+  <text x="1366" y="2050" text-anchor="middle" font-family="Plus Jakarta Sans, -apple-system, Helvetica, Arial, sans-serif" font-weight="800" font-size="120" fill="#C77B3C" letter-spacing="6">BREWSHIFT</text>
+</svg>

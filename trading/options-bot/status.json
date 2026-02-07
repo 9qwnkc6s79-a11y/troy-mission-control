@@ -1,0 +1,66 @@
+{
+  "bot_name": "Options Trading Bot",
+  "bot_type": "options",
+  "status": "running",
+  "pid": 4810,
+  "updated_at": "2026-02-01T03:45:58.296245+00:00",
+  "last_scan": "2026-01-31 21:45:58",
+  "signals_found_last_scan": 0,
+  "vix": 17.440000534057617,
+  "capital": {
+    "total_allocation": 33000,
+    "deployed": 0,
+    "available": 33000
+  },
+  "positions": {
+    "active": 0,
+    "max": 5
+  },
+  "portfolio_greeks": {
+    "net_delta": 0,
+    "est_theta": 0,
+    "total_risk": 0,
+    "num_positions": 0
+  },
+  "performance": {
+    "total_trades": 0,
+    "winners": 0,
+    "losers": 0,
+    "win_rate": 0,
+    "total_pnl": 0,
+    "avg_pnl": 0,
+    "best_trade": 0,
+    "worst_trade": 0
+  },
+  "active_trades": {},
+  "strategies": {
+    "iv_crush": {
+      "enabled": true
+    },
+    "mean_reversion": {
+      "enabled": true
+    },
+    "vol_arb": {
+      "enabled": true
+    },
+    "momentum": {
+      "enabled": true
+    }
+  },
+  "watchlist": [
+    "SPY",
+    "QQQ",
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "TSLA",
+    "AMZN",
+    "META",
+    "GOOGL",
+    "AMD",
+    "JPM",
+    "BAC",
+    "XOM",
+    "GS"
+  ]
+}
