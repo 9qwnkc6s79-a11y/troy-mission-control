@@ -53,25 +53,25 @@ export function QuickStats({ location }: QuickStatsProps) {
   ]
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
       {statCards.map((stat, index) => (
         <div key={index} className="metric-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <div className="flex items-start justify-between">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                 {stat.title}
               </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mt-1">
                 {stat.value}
               </p>
               <div className="flex items-center mt-2">
                 {stat.trend === 'up' && (
-                  <TrendingUpIcon className="h-4 w-4 text-green-500 mr-1" />
+                  <TrendingUpIcon className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-1 flex-shrink-0" />
                 )}
                 {stat.trend === 'down' && (
-                  <TrendingDownIcon className="h-4 w-4 text-red-500 mr-1" />
+                  <TrendingDownIcon className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 mr-1 flex-shrink-0" />
                 )}
-                <span className={`text-sm ${
+                <span className={`text-xs sm:text-sm truncate ${
                   stat.trend === 'up' ? 'text-green-600' : 
                   stat.trend === 'down' ? 'text-red-600' : 'text-gray-600'
                 } dark:text-gray-400`}>
@@ -79,8 +79,8 @@ export function QuickStats({ location }: QuickStatsProps) {
                 </span>
               </div>
             </div>
-            <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-              <stat.icon className={`h-6 w-6 ${stat.color}`} />
+            <div className={`p-2 sm:p-3 rounded-lg ${stat.bgColor} flex-shrink-0 ml-2`}>
+              <stat.icon className={`h-5 w-5 sm:h-6 sm:w-6 ${stat.color}`} />
             </div>
           </div>
         </div>

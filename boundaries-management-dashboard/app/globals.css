@@ -72,7 +72,7 @@
 }
 
 .metric-card {
-  @apply coffee-card p-6;
+  @apply coffee-card p-4 sm:p-6;
 }
 
 .status-indicator {
@@ -89,4 +89,67 @@
 
 .status-busy {
   @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+}
+
+/* Mobile-specific improvements */
+@layer utilities {
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .mobile-card {
+    @apply p-3 sm:p-4 lg:p-6;
+  }
+  
+  .mobile-text {
+    @apply text-sm sm:text-base;
+  }
+  
+  .mobile-heading {
+    @apply text-lg sm:text-xl lg:text-2xl;
+  }
+  
+  .mobile-subheading {
+    @apply text-base sm:text-lg lg:text-xl;
+  }
+  
+  .mobile-grid {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+  
+  .mobile-spacing {
+    @apply space-y-3 sm:space-y-4 lg:space-y-6;
+  }
+  
+  .mobile-padding {
+    @apply px-3 py-3 sm:px-4 sm:py-4 lg:px-6 lg:py-6;
+  }
+}
+
+/* Improve touch interactions */
+@media (max-width: 768px) {
+  button, .clickable {
+    @apply touch-target;
+  }
+  
+  .metric-card {
+    @apply p-4;
+  }
+  
+  /* Larger tap targets for mobile */
+  .mobile-nav button {
+    @apply p-3;
+  }
+  
+  /* Better spacing for mobile cards */
+  .card-grid {
+    @apply gap-3;
+  }
+}
+
+/* Dark mode improvements for mobile */
+@media (prefers-color-scheme: dark) {
+  .coffee-card {
+    @apply border border-gray-700;
+  }
 }
