@@ -1,0 +1,123 @@
+{
+  "voice": {
+    "status": "passed",
+    "details": [
+      {
+        "test": "HTML Interface",
+        "success": true,
+        "message": "voice-assistant.html found",
+        "timestamp": "2026-02-07T04:46:46.555907"
+      },
+      {
+        "test": "Server Script",
+        "success": true,
+        "message": "voice-server.py ready",
+        "timestamp": "2026-02-07T04:46:46.555943"
+      },
+      {
+        "test": "Dependencies",
+        "success": true,
+        "message": "websockets library available",
+        "timestamp": "2026-02-07T04:46:46.647400"
+      },
+      {
+        "test": "Server Startup",
+        "success": true,
+        "message": "WebSocket server starts successfully",
+        "timestamp": "2026-02-07T04:46:48.652581"
+      },
+      {
+        "test": "Startup Script",
+        "success": true,
+        "message": "start-voice.sh ready",
+        "timestamp": "2026-02-07T04:46:48.656846"
+      }
+    ]
+  },
+  "email": {
+    "status": "failed",
+    "details": [
+      {
+        "test": "Script File",
+        "success": true,
+        "message": "email-integration.py found",
+        "timestamp": "2026-02-07T04:46:48.657635"
+      },
+      {
+        "test": "Dependencies",
+        "success": false,
+        "message": "Missing: google.auth",
+        "timestamp": "2026-02-07T04:46:48.659540"
+      },
+      {
+        "test": "Config Directory",
+        "success": true,
+        "message": "/Users/danielkeene/.openclaw exists",
+        "timestamp": "2026-02-07T04:46:48.659690"
+      },
+      {
+        "test": "OAuth Credentials",
+        "success": false,
+        "message": "client_secret.json missing - see GMAIL_SETUP.md",
+        "timestamp": "2026-02-07T04:46:48.659750"
+      },
+      {
+        "test": "Setup Guide",
+        "success": true,
+        "message": "GMAIL_SETUP.md available",
+        "timestamp": "2026-02-07T04:46:48.659793"
+      },
+      {
+        "test": "Script Execution",
+        "success": true,
+        "message": "Script runs without errors",
+        "timestamp": "2026-02-07T04:46:48.757397"
+      }
+    ]
+  },
+  "imessage": {
+    "status": "failed",
+    "details": [
+      {
+        "test": "Platform Check",
+        "success": true,
+        "message": "Running on macOS",
+        "timestamp": "2026-02-07T04:46:48.758715"
+      },
+      {
+        "test": "Script File",
+        "success": true,
+        "message": "imessage-integration.py found",
+        "timestamp": "2026-02-07T04:46:48.758767"
+      },
+      {
+        "test": "Dependencies",
+        "success": true,
+        "message": "requests library available",
+        "timestamp": "2026-02-07T04:46:48.918409"
+      },
+      {
+        "test": "BlueBubbles Server",
+        "success": false,
+        "message": "BlueBubbles server not running - see BLUEBUBBLES_SETUP.md",
+        "timestamp": "2026-02-07T04:46:48.924657"
+      },
+      {
+        "test": "Setup Guide",
+        "success": true,
+        "message": "BLUEBUBBLES_SETUP.md available",
+        "timestamp": "2026-02-07T04:46:48.924702"
+      },
+      {
+        "test": "Messages App",
+        "success": true,
+        "message": "Messages app accessible",
+        "timestamp": "2026-02-07T04:46:48.993007"
+      }
+    ]
+  },
+  "overall": {
+    "status": "good",
+    "score": 82
+  }
+}
