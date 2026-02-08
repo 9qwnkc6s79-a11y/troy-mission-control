@@ -64,6 +64,24 @@ Skills define _how_ tools work. This file is for _your_ specifics — the stuff 
 - Duplicate file identification and resolution
 - Size analysis and Git LFS recommendations
 
+## Cycling Analytics ✅ ACTIVE
+
+**Location:** `cycling/`
+- ✅ GPX file analysis with Haversine distance calculation  
+- ✅ Performance metrics (speed, pace, elevation, duration)
+- ✅ Location-aware analysis for Aubrey/North Denton County routes
+- ✅ Weather correlation for optimal ride timing
+- ✅ Mission control dashboard integration
+
+**Performance Features:**
+- Advanced route parsing and trackpoint analysis
+- Intelligent performance rating system  
+- Training recommendations (endurance, speed, hills)
+- Weather condition optimization (52°F = ideal cycling temp)
+- Progress tracking with actionable insights
+
+**Latest Analysis:** 2/7/26 ride - 78min, 12.8mph avg, Very Good rating
+
 ## Trading Systems 🤖 AVAILABLE
 
 Multiple automated trading bots discovered:
