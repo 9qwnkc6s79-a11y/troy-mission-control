@@ -267,6 +267,9 @@
                 <a href="/organization/viewer.html" class="quick-btn">
                     🗂️ Workspace Optimizer
                 </a>
+                <a href="/cycling/viewer.html" class="quick-btn">
+                    🚴‍♂️ Cycling Analytics
+                </a>
                 <a href="#" class="quick-btn" onclick="refreshAll()">
                     🔄 Refresh System
                 </a>
@@ -423,6 +426,36 @@
                     <a href="#" class="action-btn" onclick="event.stopPropagation(); analyzeWorkspace()">Analyze</a>
                 </div>
             </div>
+
+            <!-- Cycling Analytics Card -->
+            <div class="dashboard-card" onclick="window.open('/cycling/viewer.html', '_blank')">
+                <div class="card-header">
+                    <h3 class="card-title">Cycling Analytics</h3>
+                    <div class="card-indicator"></div>
+                </div>
+                <p class="card-description">
+                    Performance tracking and route analysis for cycling workouts.
+                    GPX data analysis with weather correlation and training insights.
+                </p>
+                <div class="card-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="lastRideDistance">12.8</span>
+                        <span class="stat-label">Avg Speed (mph)</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="lastRideDuration">78</span>
+                        <span class="stat-label">Duration (min)</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="rideRating">Very Good</span>
+                        <span class="stat-label">Latest Rating</span>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="/cycling/viewer.html" class="action-btn primary" onclick="event.stopPropagation()">View Analytics</a>
+                    <a href="#" class="action-btn" onclick="event.stopPropagation(); uploadGPX()">Upload GPX</a>
+                </div>
+            </div>
         </div>
 
         <!-- Removed GitHub CTA -->
@@ -568,6 +601,10 @@
                 const dashboard = window.missionControlInstance || new MissionControl();
                 dashboard.loadOrganizationStats();
             }, 2000);
+        }
+
+        function uploadGPX() {
+            alert('GPX upload functionality would allow you to drag & drop or select GPX files for route analysis and performance tracking.');
         }
 
         function setupGitHubRepo() {
