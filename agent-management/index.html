@@ -3,208 +3,2008 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Management Dashboard</title>
+    <title>Agent Management Dashboard | Enterprise Fleet Control</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            background: #0f172a; 
-            color: white; 
-            padding: 2rem;
+        :root {
+            /* Light Theme Color System */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-hover: #e2e8f0;
+
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --text-muted: #94a3b8;
+
+            --border-light: #e2e8f0;
+            --border-medium: #cbd5e1;
+
+            --accent-primary: #2563eb;
+            --accent-primary-light: #3b82f6;
+            --accent-primary-bg: #eff6ff;
+
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --success-border: #a7f3d0;
+
+            --warning: #d97706;
+            --warning-bg: #fffbeb;
+            --warning-border: #fde68a;
+
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+
+            --info: #0891b2;
+            --info-bg: #ecfeff;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+            /* Spacing */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
-        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        .subtitle { color: #94a3b8; margin-bottom: 3rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .card { 
-            background: #1e293b; 
-            padding: 2rem; 
-            border-radius: 1rem; 
-            border: 1px solid #334155;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .card h3 { margin-bottom: 1rem; color: #60a5fa; }
-        .status { 
-            display: inline-block; 
-            padding: 0.25rem 0.75rem; 
-            border-radius: 0.5rem; 
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-primary-light) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            border-radius: var(--radius-md);
             font-size: 0.875rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* Stats Overview */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 1rem;
         }
-        .active { background: #065f46; color: #10b981; }
-        .idle { background: #fbbf24; color: #f59e0b; }
-        .offline { background: #7f1d1d; color: #f87171; }
-        .metric { display: flex; justify-content: space-between; margin: 0.5rem 0; }
-        .value { font-weight: 600; }
-        .loading { 
-            text-align: center; 
-            padding: 4rem; 
-            color: #94a3b8; 
-            font-size: 1.1rem;
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
         }
-        .btn {
-            background: #3b82f6;
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon.blue {
+            background: var(--accent-primary-bg);
+            color: var(--accent-primary);
+        }
+
+        .stat-icon.green {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .stat-icon.amber {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .stat-icon.cyan {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+
+        .stat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .stat-change.positive {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .stat-change.neutral {
+            background: var(--bg-tertiary);
+            color: var(--text-tertiary);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-secondary);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent-primary);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Agent Cards */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .agent-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .agent-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .agent-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
             color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            margin: 0.5rem;
         }
-        .btn:hover { background: #2563eb; }
-        .actions { text-align: center; margin: 2rem 0; }
+
+        .agent-avatar.primary { background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); }
+        .agent-avatar.emerald { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+        .agent-avatar.amber { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
+        .agent-avatar.purple { background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%); }
+        .agent-avatar.rose { background: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%); }
+        .agent-avatar.cyan { background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%); }
+
+        .agent-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.125rem;
+        }
+
+        .agent-purpose {
+            font-size: 0.8125rem;
+            color: var(--text-tertiary);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .status-badge.active {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success-border);
+        }
+
+        .status-badge.idle {
+            background: var(--warning-bg);
+            color: var(--warning);
+            border: 1px solid var(--warning-border);
+        }
+
+        .status-badge.offline {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid var(--danger-border);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status-badge.active .status-dot {
+            animation: pulse 2s infinite;
+        }
+
+        .agent-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-value {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .metric-value.highlight {
+            color: var(--accent-primary);
+        }
+
+        .metric-value.warning {
+            color: var(--warning);
+        }
+
+        .agent-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-primary-light);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-medium);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-tertiary);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.375rem;
+        }
+
+        /* Activity Log */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.875rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .activity-icon.warning {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .activity-icon.info {
+            background: var(--accent-primary-bg);
+            color: var(--accent-primary);
+        }
+
+        .activity-icon.danger {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .activity-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-description {
+            font-size: 0.8125rem;
+            color: var(--text-tertiary);
+            line-height: 1.4;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* Alerts Panel */
+        .alerts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.875rem;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+        }
+
+        .alert.warning {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+        }
+
+        .alert.info {
+            background: var(--accent-primary-bg);
+            border: 1px solid #bfdbfe;
+        }
+
+        .alert.success {
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+        }
+
+        .alert-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .alert.warning .alert-icon { color: var(--warning); }
+        .alert.info .alert-icon { color: var(--accent-primary); }
+        .alert.success .alert-icon { color: var(--success); }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .alert.warning .alert-title { color: var(--warning); }
+        .alert.info .alert-title { color: var(--accent-primary); }
+        .alert.success .alert-title { color: var(--success); }
+
+        .alert-description {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .alert-action {
+            margin-top: 0.75rem;
+        }
+
+        /* Performance Chart */
+        .chart-container {
+            height: 200px;
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .chart-placeholder {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 100%;
+            padding: 1rem 0;
+            gap: 0.5rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--accent-primary) 0%, var(--accent-primary-light) 100%);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+            max-width: 40px;
+        }
+
+        .chart-bar:hover {
+            filter: brightness(1.1);
+        }
+
+        .chart-bar::after {
+            content: attr(data-value);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            padding-bottom: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .chart-bar:hover::after {
+            opacity: 1;
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .chart-label {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            text-align: center;
+            flex: 1;
+            max-width: 40px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.25rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--accent-primary-bg);
+            border-color: var(--accent-primary);
+        }
+
+        .quick-action-btn svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-primary);
+        }
+
+        .quick-action-btn span {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            gap: 1.5rem;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border-light);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+            min-width: 300px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.info { border-left: 4px solid var(--accent-primary); }
+
+        .toast-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.warning .toast-icon { color: var(--warning); }
+        .toast.error .toast-icon { color: var(--danger); }
+        .toast.info .toast-icon { color: var(--accent-primary); }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .toast-close:hover {
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 480px;
+            margin: 1rem;
+            transform: scale(0.95);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-light);
+            background: var(--bg-secondary);
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-primary-bg);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-primary-bg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .agent-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .btn-group {
+                flex-wrap: wrap;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .flex-1 { flex: 1; }
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mt-1 { margin-top: 1rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Agent Management Dashboard</h1>
-        <p class="subtitle">Professional AI Agent Fleet Control System</p>
-        
-        <div class="actions">
-            <button class="btn" onclick="location.href='dashboard.html'">Full Dashboard</button>
-            <button class="btn" onclick="alert('Demo Mode - Full features in complete dashboard')">Assign Task</button>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="9" y1="9" x2="15" y2="15"/>
+                        <line x1="15" y1="9" x2="9" y2="15"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>Agent Command Center</h1>
+                    <span>Enterprise Fleet Management</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="sync-status" id="syncStatus">
+                    <div class="sync-dot"></div>
+                    <span>Live Sync</span>
+                </div>
+                <button class="btn btn-primary" onclick="openTaskModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Assign Task
+                </button>
+            </div>
         </div>
-        
-        <div class="loading" id="loading">Loading agent data...</div>
+    </header>
 
-        
-        <div class="grid" id="dashboard" style="display: none;">
-            <div class="card">
-                <h3>Troy (Main)</h3>
-                <div class="status active">Active</div>
-                <div class="metric">
-                    <span>Tokens:</span>
-                    <span class="value">90,203</span>
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Loading State -->
+        <div class="loading-container" id="loadingState">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Initializing agent connections...</div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboardContent" class="hidden">
+            <!-- Stats Overview -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Total Agents</span>
+                        <div class="stat-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statTotalAgents">6</div>
+                    <span class="stat-change positive">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="18 15 12 9 6 15"/>
+                        </svg>
+                        2 new this week
+                    </span>
                 </div>
-                <div class="metric">
-                    <span>Daily Cost:</span>
-                    <span class="value">$0.27</span>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Active Now</span>
+                        <div class="stat-icon green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statActiveAgents">4</div>
+                    <span class="stat-change positive">92% uptime</span>
                 </div>
-                <div class="metric">
-                    <span>Model:</span>
-                    <span class="value">Sonnet</span>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Daily Cost</span>
+                        <div class="stat-icon amber">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statDailyCost">$3.56</div>
+                    <span class="stat-change negative">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        -12% vs yesterday
+                    </span>
                 </div>
-                <div class="metric">
-                    <span>Purpose:</span>
-                    <span>Primary assistant</span>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Total Tokens</span>
+                        <div class="stat-icon cyan">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statTotalTokens">742K</div>
+                    <span class="stat-change neutral">Avg 123K/agent</span>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column - Agent Cards -->
+                <div>
+                    <div class="card mb-1">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7"/>
+                                    <rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/>
+                                    <rect x="3" y="14" width="7" height="7"/>
+                                </svg>
+                                Agent Fleet
+                            </h2>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary btn-sm" onclick="refreshAgents()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                        <polyline points="23 4 23 10 17 10"/>
+                                        <polyline points="1 20 1 14 7 14"/>
+                                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                                    </svg>
+                                    Refresh
+                                </button>
+                                <button class="btn btn-success btn-sm" onclick="startAllAgents()">Start All</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="agents-grid" id="agentsGrid">
+                                <!-- Agent cards will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="20" x2="18" y2="10"/>
+                                    <line x1="12" y1="20" x2="12" y2="4"/>
+                                    <line x1="6" y1="20" x2="6" y2="14"/>
+                                </svg>
+                                Token Usage (7 Days)
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <div class="chart-placeholder" id="usageChart">
+                                    <!-- Chart bars rendered by JS -->
+                                </div>
+                                <div class="chart-labels" id="chartLabels">
+                                    <!-- Labels rendered by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Activity & Alerts -->
+                <div>
+                    <!-- Alerts Panel -->
+                    <div class="card mb-1">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                    <line x1="12" y1="9" x2="12" y2="13"/>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                </svg>
+                                Alerts
+                            </h2>
+                            <span class="status-badge idle" id="alertCount">2 Active</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="alerts-list" id="alertsList">
+                                <!-- Alerts rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Log -->
+                    <div class="card mb-1">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                </svg>
+                                Activity Log
+                            </h2>
+                            <button class="btn btn-secondary btn-sm">View All</button>
+                        </div>
+                        <div class="card-body" style="padding: 0 1.5rem;">
+                            <div class="activity-list" id="activityList">
+                                <!-- Activity items rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                                </svg>
+                                Quick Actions
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <button class="quick-action-btn" onclick="openTaskModal()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="12" y1="18" x2="12" y2="12"/>
+                                        <line x1="9" y1="15" x2="15" y2="15"/>
+                                    </svg>
+                                    <span>New Task</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="showOptimizations()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"/>
+                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                                    </svg>
+                                    <span>Optimize</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="exportReport()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                    <span>Export</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="showHelp()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                    <span>Help</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="card">
-                <h3>Health Tracker</h3>
-                <div class="status active">Active</div>
-                <div class="metric">
-                    <span>Tokens:</span>
-                    <span class="value">89,162</span>
+        </div>
+    </main>
+
+    <!-- Task Assignment Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Assign New Task</h3>
+                <button class="modal-close" onclick="closeTaskModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Select Agent</label>
+                    <select class="form-select" id="taskAgent">
+                        <option value="">Choose an agent...</option>
+                        <option value="troy">Troy (Main Assistant)</option>
+                        <option value="health">Health Tracker</option>
+                        <option value="coffee">Coffee Operations</option>
+                        <option value="dev">Developer Assistant</option>
+                        <option value="research">Research Agent</option>
+                        <option value="scheduler">Schedule Manager</option>
+                    </select>
                 </div>
-                <div class="metric">
-                    <span>Daily Cost:</span>
-                    <span class="value">$0.89</span>
+                <div class="form-group">
+                    <label class="form-label">Task Description</label>
+                    <textarea class="form-textarea" id="taskDescription" placeholder="Describe the task you want the agent to perform..."></textarea>
                 </div>
-                <div class="metric">
-                    <span>Model:</span>
-                    <span class="value">Sonnet</span>
-                </div>
-                <div class="metric">
-                    <span>Purpose:</span>
-                    <span>Fitness tracking</span>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select" id="taskPriority">
+                        <option value="normal">Normal</option>
+                        <option value="high">High Priority</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
                 </div>
             </div>
-            
-            <div class="card">
-                <h3>Coffee Operations</h3>
-                <div class="status idle">Idle</div>
-                <div class="metric">
-                    <span>Tokens:</span>
-                    <span class="value">124,278</span>
-                </div>
-                <div class="metric">
-                    <span>Daily Cost:</span>
-                    <span class="value">$1.86</span>
-                </div>
-                <div class="metric">
-                    <span>Model:</span>
-                    <span class="value">Opus (Expensive!)</span>
-                </div>
-                <div class="metric">
-                    <span>Purpose:</span>
-                    <span>Coffee shop management</span>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>Developer Assistant</h3>
-                <div class="status offline">Offline</div>
-                <div class="metric">
-                    <span>Tokens:</span>
-                    <span class="value">91,395</span>
-                </div>
-                <div class="metric">
-                    <span>Daily Cost:</span>
-                    <span class="value">$0.91</span>
-                </div>
-                <div class="metric">
-                    <span>Model:</span>
-                    <span class="value">Sonnet</span>
-                </div>
-                <div class="metric">
-                    <span>Purpose:</span>
-                    <span>Technical development</span>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>Fleet Summary</h3>
-                <div class="status active">Operational</div>
-                <div class="metric">
-                    <span>Total Agents:</span>
-                    <span class="value">6 agents</span>
-                </div>
-                <div class="metric">
-                    <span>Daily Cost:</span>
-                    <span class="value">$3.56</span>
-                </div>
-                <div class="metric">
-                    <span>Total Tokens:</span>
-                    <span class="value">742K</span>
-                </div>
-                <div class="metric">
-                    <span>Efficiency:</span>
-                    <span class="value">92%</span>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>Optimization</h3>
-                <div class="status idle">Recommendations</div>
-                <div class="metric">
-                    <span>Top Issue:</span>
-                    <span class="value">Coffee Ops using Opus</span>
-                </div>
-                <div class="metric">
-                    <span>Potential Savings:</span>
-                    <span class="value">$0.50/day</span>
-                </div>
-                <div class="metric">
-                    <span>Action:</span>
-                    <span class="value">Switch to Sonnet</span>
-                </div>
-                <div class="metric">
-                    <span>ROI:</span>
-                    <span class="value">27% cost reduction</span>
-                </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeTaskModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitTask()">Assign Task</button>
             </div>
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <script>
-        // Simple loading animation
-        setTimeout(() => {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'grid';
-        }, 1500);
+        // =====================================================
+        // Agent Management Dashboard - Enterprise Edition
+        // =====================================================
+
+        // Agent Data Store
+        const agentData = {
+            agents: [
+                {
+                    id: 'troy',
+                    name: 'Troy',
+                    subtitle: 'Main Assistant',
+                    purpose: 'Primary AI assistant for general tasks',
+                    status: 'active',
+                    avatar: 'T',
+                    avatarClass: 'primary',
+                    metrics: {
+                        tokens: 90203,
+                        cost: 0.27,
+                        model: 'Sonnet',
+                        uptime: '99.2%'
+                    }
+                },
+                {
+                    id: 'health',
+                    name: 'Health Tracker',
+                    subtitle: 'Wellness Agent',
+                    purpose: 'Fitness and health monitoring',
+                    status: 'active',
+                    avatar: 'H',
+                    avatarClass: 'emerald',
+                    metrics: {
+                        tokens: 89162,
+                        cost: 0.89,
+                        model: 'Sonnet',
+                        uptime: '98.5%'
+                    }
+                },
+                {
+                    id: 'coffee',
+                    name: 'Coffee Operations',
+                    subtitle: 'Business Agent',
+                    purpose: 'Coffee shop management & analytics',
+                    status: 'idle',
+                    avatar: 'C',
+                    avatarClass: 'amber',
+                    metrics: {
+                        tokens: 124278,
+                        cost: 1.86,
+                        model: 'Opus',
+                        uptime: '95.8%'
+                    }
+                },
+                {
+                    id: 'dev',
+                    name: 'Developer',
+                    subtitle: 'Tech Agent',
+                    purpose: 'Code assistance & technical tasks',
+                    status: 'offline',
+                    avatar: 'D',
+                    avatarClass: 'purple',
+                    metrics: {
+                        tokens: 91395,
+                        cost: 0.91,
+                        model: 'Sonnet',
+                        uptime: '87.2%'
+                    }
+                },
+                {
+                    id: 'research',
+                    name: 'Research',
+                    subtitle: 'Analysis Agent',
+                    purpose: 'Deep research and analysis',
+                    status: 'active',
+                    avatar: 'R',
+                    avatarClass: 'cyan',
+                    metrics: {
+                        tokens: 156892,
+                        cost: 0.47,
+                        model: 'Haiku',
+                        uptime: '99.9%'
+                    }
+                },
+                {
+                    id: 'scheduler',
+                    name: 'Scheduler',
+                    subtitle: 'Planning Agent',
+                    purpose: 'Calendar & task scheduling',
+                    status: 'active',
+                    avatar: 'S',
+                    avatarClass: 'rose',
+                    metrics: {
+                        tokens: 45678,
+                        cost: 0.16,
+                        model: 'Haiku',
+                        uptime: '99.7%'
+                    }
+                }
+            ],
+            alerts: [
+                {
+                    type: 'warning',
+                    title: 'High Cost Agent Detected',
+                    description: 'Coffee Operations is using Opus model. Consider switching to Sonnet for 60% cost savings.',
+                    action: 'Review Settings'
+                },
+                {
+                    type: 'info',
+                    title: 'Developer Agent Offline',
+                    description: 'Agent has been offline for 2 hours. May need manual restart.',
+                    action: 'Restart Agent'
+                }
+            ],
+            activities: [
+                { type: 'success', title: 'Troy completed task', description: 'Generated weekly summary report', time: '2 min ago' },
+                { type: 'info', title: 'Health Tracker synced', description: 'Updated fitness metrics from Apple Health', time: '15 min ago' },
+                { type: 'warning', title: 'Cost threshold reached', description: 'Daily budget at 85% utilization', time: '32 min ago' },
+                { type: 'success', title: 'Research completed', description: 'Market analysis report ready for review', time: '1 hour ago' },
+                { type: 'info', title: 'Scheduler updated', description: 'Added 3 new calendar events', time: '2 hours ago' }
+            ],
+            chartData: [
+                { day: 'Mon', value: 85 },
+                { day: 'Tue', value: 120 },
+                { day: 'Wed', value: 95 },
+                { day: 'Thu', value: 140 },
+                { day: 'Fri', value: 110 },
+                { day: 'Sat', value: 65 },
+                { day: 'Sun', value: 45 }
+            ]
+        };
+
+        // =====================================================
+        // Initialization
+        // =====================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDashboard();
+        });
+
+        async function initializeDashboard() {
+            try {
+                // Simulate API fetch delay
+                await simulateDelay(1200);
+
+                // Hide loading, show content
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('dashboardContent').classList.remove('hidden');
+
+                // Render all components
+                renderAgents();
+                renderAlerts();
+                renderActivityLog();
+                renderChart();
+                updateStats();
+
+                // Start real-time updates
+                startRealtimeUpdates();
+
+            } catch (error) {
+                console.error('Dashboard initialization failed:', error);
+                showToast('Failed to initialize dashboard', 'error');
+            }
+        }
+
+        // =====================================================
+        // Rendering Functions
+        // =====================================================
+
+        function renderAgents() {
+            const grid = document.getElementById('agentsGrid');
+            if (!grid) return;
+
+            grid.innerHTML = agentData.agents.map(agent => `
+                <div class="agent-card" data-agent-id="${agent.id}">
+                    <div class="agent-header">
+                        <div class="agent-info">
+                            <div class="agent-avatar ${agent.avatarClass}">${agent.avatar}</div>
+                            <div>
+                                <div class="agent-name">${agent.name}</div>
+                                <div class="agent-purpose">${agent.subtitle}</div>
+                            </div>
+                        </div>
+                        <div class="status-badge ${agent.status}">
+                            <span class="status-dot"></span>
+                            ${capitalize(agent.status)}
+                        </div>
+                    </div>
+                    <div class="agent-metrics">
+                        <div class="metric-item">
+                            <span class="metric-label">Tokens</span>
+                            <span class="metric-value">${formatNumber(agent.metrics.tokens)}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Daily Cost</span>
+                            <span class="metric-value ${agent.metrics.cost > 1 ? 'warning' : ''}">$${agent.metrics.cost.toFixed(2)}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Model</span>
+                            <span class="metric-value ${agent.metrics.model === 'Opus' ? 'warning' : 'highlight'}">${agent.metrics.model}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Uptime</span>
+                            <span class="metric-value">${agent.metrics.uptime}</span>
+                        </div>
+                    </div>
+                    <div class="agent-controls">
+                        ${agent.status === 'active' ? `
+                            <button class="btn btn-warning btn-sm" onclick="pauseAgent('${agent.id}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <rect x="6" y="4" width="4" height="16"/>
+                                    <rect x="14" y="4" width="4" height="16"/>
+                                </svg>
+                                Pause
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="stopAgent('${agent.id}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                </svg>
+                                Stop
+                            </button>
+                        ` : agent.status === 'idle' ? `
+                            <button class="btn btn-success btn-sm" onclick="resumeAgent('${agent.id}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                Resume
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="stopAgent('${agent.id}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                </svg>
+                                Stop
+                            </button>
+                        ` : `
+                            <button class="btn btn-success btn-sm" onclick="startAgent('${agent.id}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                Start
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="restartAgent('${agent.id}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <polyline points="23 4 23 10 17 10"/>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                                </svg>
+                                Restart
+                            </button>
+                        `}
+                        <button class="btn btn-secondary btn-sm btn-icon" onclick="showAgentDetails('${agent.id}')" title="Details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                <circle cx="12" cy="12" r="1"/>
+                                <circle cx="19" cy="12" r="1"/>
+                                <circle cx="5" cy="12" r="1"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAlerts() {
+            const container = document.getElementById('alertsList');
+            if (!container) return;
+
+            container.innerHTML = agentData.alerts.map(alert => `
+                <div class="alert ${alert.type}">
+                    <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        ${alert.type === 'warning' ? `
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        ` : alert.type === 'info' ? `
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        ` : `
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        `}
+                    </svg>
+                    <div class="alert-content">
+                        <div class="alert-title">${alert.title}</div>
+                        <div class="alert-description">${alert.description}</div>
+                        <div class="alert-action">
+                            <button class="btn btn-sm ${alert.type === 'warning' ? 'btn-warning' : 'btn-primary'}">${alert.action}</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update alert count badge
+            const alertCount = document.getElementById('alertCount');
+            if (alertCount) {
+                alertCount.textContent = `${agentData.alerts.length} Active`;
+            }
+        }
+
+        function renderActivityLog() {
+            const container = document.getElementById('activityList');
+            if (!container) return;
+
+            container.innerHTML = agentData.activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon ${activity.type}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            ${activity.type === 'success' ? `
+                                <polyline points="20 6 9 17 4 12"/>
+                            ` : activity.type === 'warning' ? `
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            ` : activity.type === 'danger' ? `
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            ` : `
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            `}
+                        </svg>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-description">${activity.description}</div>
+                    </div>
+                    <div class="activity-time">${activity.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderChart() {
+            const chartContainer = document.getElementById('usageChart');
+            const labelsContainer = document.getElementById('chartLabels');
+            if (!chartContainer || !labelsContainer) return;
+
+            const maxValue = Math.max(...agentData.chartData.map(d => d.value));
+
+            chartContainer.innerHTML = agentData.chartData.map(item => `
+                <div class="chart-bar" style="height: ${(item.value / maxValue) * 100}%;" data-value="${item.value}K"></div>
+            `).join('');
+
+            labelsContainer.innerHTML = agentData.chartData.map(item => `
+                <span class="chart-label">${item.day}</span>
+            `).join('');
+        }
+
+        function updateStats() {
+            const activeAgents = agentData.agents.filter(a => a.status === 'active').length;
+            const totalCost = agentData.agents.reduce((sum, a) => sum + a.metrics.cost, 0);
+            const totalTokens = agentData.agents.reduce((sum, a) => sum + a.metrics.tokens, 0);
+
+            document.getElementById('statTotalAgents').textContent = agentData.agents.length;
+            document.getElementById('statActiveAgents').textContent = activeAgents;
+            document.getElementById('statDailyCost').textContent = `$${totalCost.toFixed(2)}`;
+            document.getElementById('statTotalTokens').textContent = formatNumber(totalTokens);
+        }
+
+        // =====================================================
+        // Agent Control Functions
+        // =====================================================
+
+        function startAgent(agentId) {
+            const agent = agentData.agents.find(a => a.id === agentId);
+            if (agent) {
+                agent.status = 'active';
+                renderAgents();
+                updateStats();
+                showToast(`${agent.name} started successfully`, 'success');
+                addActivity('success', `${agent.name} started`, 'Agent is now active and processing tasks');
+            }
+        }
+
+        function stopAgent(agentId) {
+            const agent = agentData.agents.find(a => a.id === agentId);
+            if (agent) {
+                agent.status = 'offline';
+                renderAgents();
+                updateStats();
+                showToast(`${agent.name} stopped`, 'info');
+                addActivity('info', `${agent.name} stopped`, 'Agent has been shut down');
+            }
+        }
+
+        function pauseAgent(agentId) {
+            const agent = agentData.agents.find(a => a.id === agentId);
+            if (agent) {
+                agent.status = 'idle';
+                renderAgents();
+                updateStats();
+                showToast(`${agent.name} paused`, 'warning');
+                addActivity('warning', `${agent.name} paused`, 'Agent is idle and waiting');
+            }
+        }
+
+        function resumeAgent(agentId) {
+            const agent = agentData.agents.find(a => a.id === agentId);
+            if (agent) {
+                agent.status = 'active';
+                renderAgents();
+                updateStats();
+                showToast(`${agent.name} resumed`, 'success');
+                addActivity('success', `${agent.name} resumed`, 'Agent is now active');
+            }
+        }
+
+        function restartAgent(agentId) {
+            const agent = agentData.agents.find(a => a.id === agentId);
+            if (agent) {
+                showToast(`Restarting ${agent.name}...`, 'info');
+                agent.status = 'idle';
+                renderAgents();
+
+                setTimeout(() => {
+                    agent.status = 'active';
+                    renderAgents();
+                    updateStats();
+                    showToast(`${agent.name} restarted successfully`, 'success');
+                    addActivity('success', `${agent.name} restarted`, 'Agent completed restart cycle');
+                }, 2000);
+            }
+        }
+
+        function startAllAgents() {
+            agentData.agents.forEach(agent => {
+                agent.status = 'active';
+            });
+            renderAgents();
+            updateStats();
+            showToast('All agents started', 'success');
+            addActivity('success', 'Fleet started', 'All agents are now active');
+        }
+
+        function refreshAgents() {
+            showToast('Refreshing agent data...', 'info');
+            setTimeout(() => {
+                renderAgents();
+                updateStats();
+                showToast('Agent data refreshed', 'success');
+            }, 1000);
+        }
+
+        function showAgentDetails(agentId) {
+            const agent = agentData.agents.find(a => a.id === agentId);
+            if (agent) {
+                showToast(`${agent.name}: ${agent.purpose}`, 'info');
+            }
+        }
+
+        // =====================================================
+        // Modal Functions
+        // =====================================================
+
+        function openTaskModal() {
+            document.getElementById('taskModal').classList.add('active');
+        }
+
+        function closeTaskModal() {
+            document.getElementById('taskModal').classList.remove('active');
+            // Reset form
+            document.getElementById('taskAgent').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskPriority').value = 'normal';
+        }
+
+        function submitTask() {
+            const agentId = document.getElementById('taskAgent').value;
+            const description = document.getElementById('taskDescription').value;
+            const priority = document.getElementById('taskPriority').value;
+
+            if (!agentId) {
+                showToast('Please select an agent', 'warning');
+                return;
+            }
+
+            if (!description.trim()) {
+                showToast('Please enter a task description', 'warning');
+                return;
+            }
+
+            const agent = agentData.agents.find(a => a.id === agentId);
+            closeTaskModal();
+            showToast(`Task assigned to ${agent?.name || 'agent'}`, 'success');
+            addActivity('success', `Task assigned to ${agent?.name}`, description.substring(0, 50) + (description.length > 50 ? '...' : ''));
+        }
+
+        // =====================================================
+        // Quick Action Functions
+        // =====================================================
+
+        function showOptimizations() {
+            showToast('Analyzing fleet for optimization opportunities...', 'info');
+            setTimeout(() => {
+                showToast('Recommendation: Switch Coffee Operations to Sonnet model', 'warning');
+            }, 1500);
+        }
+
+        function exportReport() {
+            showToast('Generating fleet report...', 'info');
+            setTimeout(() => {
+                showToast('Report downloaded: agent-fleet-report.pdf', 'success');
+            }, 2000);
+        }
+
+        function showHelp() {
+            showToast('Documentation: docs.example.com/agent-management', 'info');
+        }
+
+        // =====================================================
+        // Toast Notifications
+        // =====================================================
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const iconPaths = {
+                success: '<polyline points="20 6 9 17 4 12"/>',
+                warning: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+                error: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+                info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>'
+            };
+
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${iconPaths[type] || iconPaths.info}
+                </svg>
+                <span class="toast-message">${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+
+        // =====================================================
+        // Activity Log Helper
+        // =====================================================
+
+        function addActivity(type, title, description) {
+            agentData.activities.unshift({
+                type,
+                title,
+                description,
+                time: 'Just now'
+            });
+
+            // Keep only last 10 activities
+            if (agentData.activities.length > 10) {
+                agentData.activities.pop();
+            }
+
+            renderActivityLog();
+        }
+
+        // =====================================================
+        // Real-time Updates
+        // =====================================================
+
+        function startRealtimeUpdates() {
+            // Simulate periodic updates
+            setInterval(() => {
+                // Randomly update token counts slightly
+                agentData.agents.forEach(agent => {
+                    if (agent.status === 'active') {
+                        agent.metrics.tokens += Math.floor(Math.random() * 100);
+                    }
+                });
+                updateStats();
+            }, 30000);
+        }
+
+        // =====================================================
+        // Utility Functions
+        // =====================================================
+
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(0) + 'K';
+            }
+            return num.toString();
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function simulateDelay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Close modal on outside click
+        document.getElementById('taskModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeTaskModal();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeTaskModal();
+            }
+            if (e.key === 'n' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                openTaskModal();
+            }
+        });
     </script>
 </body>
 </html>
