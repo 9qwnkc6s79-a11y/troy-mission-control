@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Management Dashboard</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .dashboard-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #4a9eff 0%, #0066cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .dashboard-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .agent-card {
+            background: var(--dark-surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+        
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .agent-purpose {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--dark-elevated);
+            border-radius: 8px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .agent-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--dark-surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .stat-card .metric-value {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calendar-preview {
+            background: var(--dark-elevated);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+        
+        .calendar-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.25rem 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .calendar-item:last-child {
+            border-bottom: none;
+        }
+        
+        .calendar-time {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        
+        .task-form {
+            background: var(--dark-surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        
+        .agent-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-chip {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        
+        .agent-chip.selected {
+            border-color: var(--primary-color);
+            background: rgba(0, 102, 204, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .task-input {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .floating-add-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .floating-add-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="nav-brand">🤖 Agent Command Center</a>
+                <div class="nav-links">
+                    <a href="#" class="nav-link active">Dashboard</a>
+                    <a href="cron-manager.html" class="nav-link">Schedule</a>
+                    <a href="#" class="nav-link" onclick="openProfileManager()">Profiles</a>
+                    <a href="#" class="nav-link" onclick="openAnalytics()">Analytics</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="dashboard-header">
+        <div class="container">
+            <h1 class="dashboard-title">Agent Fleet Overview</h1>
+            <p class="dashboard-subtitle">Monitor, control, and coordinate your AI assistant ecosystem</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <span class="metric-value text-success" id="active-agents">0</span>
+                <span class="metric-label">Active Agents</span>
+            </div>
+            <div class="stat-card">
+                <span class="metric-value text-warning" id="pending-tasks">0</span>
+                <span class="metric-label">Pending Tasks</span>
+            </div>
+            <div class="stat-card">
+                <span class="metric-value text-primary" id="daily-cost">$0.00</span>
+                <span class="metric-label">Daily Cost</span>
+            </div>
+            <div class="stat-card">
+                <span class="metric-value text-info" id="total-tokens">0K</span>
+                <span class="metric-label">Total Tokens</span>
+            </div>
+        </div>
+
+        <!-- Task Assignment Form -->
+        <div class="task-form">
+            <h3 style="margin-bottom: 1rem;">Assign Task to Agent</h3>
+            <div class="form-group">
+                <label class="form-label">Select Agent(s)</label>
+                <div class="agent-selector" id="agent-selector">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Task Description</label>
+                <textarea class="form-control task-input" id="task-input" 
+                         placeholder="Describe what you want the agent to do..."></textarea>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" onclick="assignTask()">
+                    📋 Assign Task
+                </button>
+                <button class="btn btn-success" onclick="spawnNewAgent()">
+                    ➕ Spawn New Agent
+                </button>
+            </div>
+        </div>
+
+        <!-- Agent Grid -->
+        <div class="agent-grid" id="agent-grid">
+            <!-- Populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Task Assignment Modal -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('task-modal')">&times;</button>
+            <div class="modal-header">
+                <h2>Assign Task</h2>
+            </div>
+            <form onsubmit="submitTask(event)">
+                <div class="form-group">
+                    <label class="form-label">Agent</label>
+                    <select class="form-control" id="task-agent" required>
+                        <!-- Populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <select class="form-control" id="task-priority">
+                        <option value="normal">Normal</option>
+                        <option value="high">High Priority</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Task Description</label>
+                    <textarea class="form-control" id="task-description" rows="4" required></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Assign Task</button>
+                    <button type="button" class="btn" onclick="closeModal('task-modal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <button class="floating-add-btn" onclick="openTaskModal()" title="Assign Task">
+        ➕
+    </button>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboard();
+            setInterval(loadDashboard, 30000); // Refresh every 30 seconds
+        });
+    </script>
+</body>
+</html>

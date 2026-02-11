@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Manager - Agent Scheduling</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline-day {
+            margin-bottom: 2rem;
+            background: var(--dark-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .timeline-header {
+            background: var(--dark-elevated);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .timeline-events {
+            padding: 1rem;
+        }
+        
+        .timeline-event {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--dark-elevated);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-event:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow);
+        }
+        
+        .timeline-event.disabled {
+            opacity: 0.6;
+            border-left-color: var(--text-muted);
+        }
+        
+        .event-time {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 80px;
+            margin-right: 1rem;
+        }
+        
+        .event-content {
+            flex: 1;
+        }
+        
+        .event-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .event-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .event-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .quick-schedule {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .schedule-card {
+            background: var(--dark-surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .schedule-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+        
+        .schedule-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .schedule-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .schedule-description {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .cron-form {
+            background: var(--dark-surface);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .cron-expression {
+            font-family: 'Monaco', 'Consolas', monospace;
+            background: var(--dark-elevated);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .cron-help {
+            background: var(--dark-elevated);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-box {
+            background: var(--dark-surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-brand">🤖 Agent Command Center</a>
+                <div class="nav-links">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="#" class="nav-link active">Schedule</a>
+                    <a href="#" class="nav-link" onclick="openProfileManager()">Profiles</a>
+                    <a href="#" class="nav-link" onclick="openAnalytics()">Analytics</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div class="card-header" style="text-align: center; margin-bottom: 2rem;">
+            <h1 class="card-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">⏰ Agent Schedule Manager</h1>
+            <p class="card-subtitle">Create and manage automated tasks and reminders</p>
+        </div>
+
+        <!-- Schedule Stats -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="metric-value text-success" id="active-jobs">0</span>
+                <span class="metric-label">Active Jobs</span>
+            </div>
+            <div class="stat-box">
+                <span class="metric-value text-warning" id="disabled-jobs">0</span>
+                <span class="metric-label">Disabled</span>
+            </div>
+            <div class="stat-box">
+                <span class="metric-value text-info" id="next-run">--:--</span>
+                <span class="metric-label">Next Run</span>
+            </div>
+            <div class="stat-box">
+                <span class="metric-value text-primary" id="total-jobs">0</span>
+                <span class="metric-label">Total Jobs</span>
+            </div>
+        </div>
+
+        <!-- Quick Schedule Templates -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Quick Schedule Templates</h3>
+                <p class="card-subtitle">Create common reminders and tasks with one click</p>
+            </div>
+            <div class="quick-schedule">
+                <div class="schedule-card" onclick="createQuickReminder('health')">
+                    <span class="schedule-icon">🏃‍♂️</span>
+                    <div class="schedule-title">Health Check</div>
+                    <div class="schedule-description">Daily health tracking reminder</div>
+                </div>
+                <div class="schedule-card" onclick="createQuickReminder('business')">
+                    <span class="schedule-icon">☕</span>
+                    <div class="schedule-title">Business Task</div>
+                    <div class="schedule-description">Boundaries Coffee operations</div>
+                </div>
+                <div class="schedule-card" onclick="createQuickReminder('meeting')">
+                    <span class="schedule-icon">📅</span>
+                    <div class="schedule-title">Meeting Reminder</div>
+                    <div class="schedule-description">Pre-meeting preparation</div>
+                </div>
+                <div class="schedule-card" onclick="createQuickReminder('custom')">
+                    <span class="schedule-icon">⚙️</span>
+                    <div class="schedule-title">Custom Task</div>
+                    <div class="schedule-description">Create your own schedule</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Cron Job Form -->
+        <div class="card" id="cron-form" style="display: none;">
+            <div class="card-header">
+                <h3 class="card-title">Create Scheduled Task</h3>
+                <p class="card-subtitle">Set up automated reminders and agent tasks</p>
+            </div>
+            <div class="cron-form">
+                <form onsubmit="createCronJob(event)">
+                    <div class="form-group">
+                        <label class="form-label">Task Name</label>
+                        <input type="text" class="form-control" id="job-name" required 
+                               placeholder="e.g., Daily Workout Reminder">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Schedule Type</label>
+                            <select class="form-control" id="schedule-type" onchange="updateScheduleFields()">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="custom">Custom Cron</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="time-field">
+                            <label class="form-label">Time</label>
+                            <input type="time" class="form-control" id="schedule-time" value="09:00">
+                        </div>
+                        
+                        <div class="form-group" id="day-field" style="display: none;">
+                            <label class="form-label">Day</label>
+                            <select class="form-control" id="schedule-day">
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                                <option value="0">Sunday</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="cron-field" style="display: none;">
+                        <label class="form-label">Cron Expression</label>
+                        <input type="text" class="form-control" id="cron-expression" 
+                               placeholder="0 9 * * *">
+                        <div class="cron-help">
+                            <strong>Cron format:</strong> minute hour day month weekday<br>
+                            Examples: <code>0 9 * * *</code> (daily 9am), <code>0 18 * * 1</code> (Mondays 6pm)
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Message / Task</label>
+                        <textarea class="form-control" id="job-message" rows="3" required
+                                  placeholder="What should the agent do or remind you about?"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Target Agent/Channel</label>
+                            <select class="form-control" id="job-target">
+                                <option value="main">Main Session</option>
+                                <option value="-5251868903">Health Group</option>
+                                <option value="-5158435516">Coffee Team</option>
+                                <option value="-5194650963">Developer Chat</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Priority</label>
+                            <select class="form-control" id="job-priority">
+                                <option value="normal">Normal</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="cron-expression" id="preview-expression">0 9 * * *</div>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-primary">📅 Create Scheduled Task</button>
+                        <button type="button" class="btn" onclick="hideCronForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Timeline View -->
+        <div class="timeline-container">
+            <div class="card-header" style="text-align: center;">
+                <h3 class="card-title">📋 Scheduled Tasks Timeline</h3>
+                <p class="card-subtitle">Next 7 days of automated tasks</p>
+            </div>
+            <div id="timeline-container">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Reminder Modal -->
+    <div class="modal" id="quick-reminder-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('quick-reminder-modal')">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-title">Create Reminder</h2>
+            </div>
+            <form onsubmit="submitQuickReminder(event)">
+                <div class="form-group">
+                    <label class="form-label">Reminder Text</label>
+                    <textarea class="form-control" id="quick-message" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">When?</label>
+                    <select class="form-control" id="quick-when">
+                        <option value="30min">In 30 minutes</option>
+                        <option value="1hour">In 1 hour</option>
+                        <option value="today">Later today (6 PM)</option>
+                        <option value="tomorrow">Tomorrow morning (9 AM)</option>
+                        <option value="custom">Custom time...</option>
+                    </select>
+                </div>
+                <div class="form-group" id="custom-time" style="display: none;">
+                    <label class="form-label">Custom Time</label>
+                    <input type="datetime-local" class="form-control" id="custom-datetime">
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Set Reminder</button>
+                    <button type="button" class="btn" onclick="closeModal('quick-reminder-modal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/cron-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCronManager();
+            setInterval(loadCronManager, 60000); // Refresh every minute
+        });
+    </script>
+</body>
+</html>
