@@ -4,7 +4,9 @@ import { useState } from 'react'
 import { SalesOverview } from '@/components/SalesOverview'
 import { LocationStats } from '@/components/LocationStats'
 import { QuickStats } from '@/components/QuickStats'
-import { FundraisingProgress } from '@/components/FundraisingProgress'
+import { MarketingHighlights } from '@/components/MarketingHighlights'
+import { OperationsHealth } from '@/components/OperationsHealth'
+import { ChecklistTrends } from '@/components/ChecklistTrends'
 import { RecentActivity } from '@/components/RecentActivity'
 import { LocationSelector } from '@/components/LocationSelector'
 
@@ -24,9 +26,9 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="w-full sm:w-auto">
-          <LocationSelector 
-            selected={selectedLocation} 
-            onChange={setSelectedLocation} 
+          <LocationSelector
+            selected={selectedLocation}
+            onChange={setSelectedLocation}
           />
         </div>
       </div>
@@ -37,16 +39,18 @@ export default function Dashboard() {
       {/* Sales Overview */}
       <SalesOverview location={selectedLocation} />
 
-      {/* Location Comparison */}
+      {/* Location Comparison (now includes Customer Pulse) */}
       <LocationStats />
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
-        {/* Fundraising Progress */}
-        <FundraisingProgress />
-
-        {/* Recent Activity */}
-        <RecentActivity />
+      {/* Operations & Trends */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <OperationsHealth />
+        <ChecklistTrends location={selectedLocation} />
+        <MarketingHighlights />
       </div>
+
+      {/* Recent Activity */}
+      <RecentActivity />
     </div>
   )
 }

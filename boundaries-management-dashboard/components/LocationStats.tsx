@@ -1,25 +1,63 @@
 'use client'
 
-import { MapPinIcon, ClockIcon, UserIcon, TrendingUpIcon } from 'lucide-react'
+import { MapPin, Clock, Users, TrendingUp, Star, Loader2 } from 'lucide-react'
 import { mockData } from '@/data/mockData'
+import { useReviews } from '@/hooks/useReviews'
+import { useBothLocationsSales, useStaffOnDuty } from '@/hooks/useSalesData'
 
 export function LocationStats() {
   const { locationStats } = mockData
 
+  // Fetch real review data
+  const { data: reviewsData, loading: reviewsLoading } = useReviews()
+
+  // Fetch real sales data for both locations in a single request
+  const { data: salesData, loading: salesLoading } = useBothLocationsSales({ refreshInterval: 120000 })
+
+  // Fetch staff on duty for each location
+  const { count: littleElmStaff } = useStaffOnDuty('little-elm')
+  const { count: prosperStaff } = useStaffOnDuty('prosper')
+
+  const isLoading = reviewsLoading || salesLoading
+
   const locations = [
     {
       name: 'Little Elm',
-      data: locationStats.littleElm,
+      data: {
+        ...locationStats.littleElm,
+        todaySales: salesData.littleElm?.todaySales ?? locationStats.littleElm.todaySales,
+        todayOrders: salesData.littleElm?.todayOrders ?? locationStats.littleElm.todayOrders,
+        avgOrderValue: salesData.littleElm?.avgOrderValue ?? locationStats.littleElm.avgOrderValue,
+        monthlyRevenue: salesData.littleElm?.monthlyRevenue ?? locationStats.littleElm.monthlyRevenue,
+        staffOnDuty: littleElmStaff || locationStats.littleElm.staffOnDuty,
+      },
       color: 'bg-boundaries-primary',
       accent: 'text-boundaries-primary',
       bgAccent: 'bg-green-50 dark:bg-green-900/20',
+      reviews: reviewsData.littleElm ? {
+        rating: reviewsData.littleElm.rating,
+        total: reviewsData.littleElm.totalReviews,
+        thisMonth: reviewsData.littleElm.thisMonthCount,
+      } : { rating: 4.8, total: 156, thisMonth: 12 },
     },
     {
       name: 'Prosper',
-      data: locationStats.prosper,
+      data: {
+        ...locationStats.prosper,
+        todaySales: salesData.prosper?.todaySales ?? locationStats.prosper.todaySales,
+        todayOrders: salesData.prosper?.todayOrders ?? locationStats.prosper.todayOrders,
+        avgOrderValue: salesData.prosper?.avgOrderValue ?? locationStats.prosper.avgOrderValue,
+        monthlyRevenue: salesData.prosper?.monthlyRevenue ?? locationStats.prosper.monthlyRevenue,
+        staffOnDuty: prosperStaff || locationStats.prosper.staffOnDuty,
+      },
       color: 'bg-boundaries-secondary',
       accent: 'text-boundaries-secondary',
       bgAccent: 'bg-orange-50 dark:bg-orange-900/20',
+      reviews: reviewsData.prosper ? {
+        rating: reviewsData.prosper.rating,
+        total: reviewsData.prosper.totalReviews,
+        thisMonth: reviewsData.prosper.thisMonthCount,
+      } : { rating: 4.7, total: 186, thisMonth: 16 },
     }
   ]
 
@@ -28,7 +66,7 @@ export function LocationStats() {
       <div className="coffee-card-header">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Location Comparison</h3>
-          <MapPinIcon className="h-5 w-5 opacity-80" />
+          <MapPin className="h-5 w-5 opacity-80" />
         </div>
       </div>
 
@@ -55,25 +93,59 @@ export function LocationStats() {
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     Today's Sales
                   </p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    ${location.data.todaySales.toLocaleString()}
-                  </p>
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin text-gray-400 mt-1" />
+                  ) : (
+                    <p className="text-xl font-bold text-gray-900 dark:text-white">
+                      ${location.data.todaySales.toLocaleString()}
+                    </p>
+                  )}
                 </div>
                 <div className={`p-3 rounded-lg ${location.bgAccent}`}>
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     Orders
                   </p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {location.data.todayOrders}
-                  </p>
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin text-gray-400 mt-1" />
+                  ) : (
+                    <p className="text-xl font-bold text-gray-900 dark:text-white">
+                      {location.data.todayOrders}
+                    </p>
+                  )}
                 </div>
+              </div>
+
+              {/* Customer Reviews */}
+              <div className="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                  <div>
+                    {reviewsLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                    ) : (
+                      <>
+                        <span className="text-lg font-bold text-gray-900 dark:text-white">
+                          {location.reviews.rating}
+                        </span>
+                        <span className="text-sm text-gray-500 ml-1">
+                          ({location.reviews.total} reviews)
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+                {!reviewsLoading && (
+                  <span className="text-sm text-green-600 font-medium">
+                    +{location.reviews.thisMonth} this month
+                  </span>
+                )}
               </div>
 
               {/* Additional Stats */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <TrendingUpIcon className="h-4 w-4 text-gray-400" />
+                    <TrendingUp className="h-4 w-4 text-gray-400" />
                     <span className="text-sm text-gray-600 dark:text-gray-400">
                       Avg Order Value
                     </span>
@@ -85,9 +157,9 @@ export function LocationStats() {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <UserIcon className="h-4 w-4 text-gray-400" />
+                    <Users className="h-4 w-4 text-gray-400" />
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Staff on Duty
+                      Staff On Duty
                     </span>
                   </div>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
@@ -97,7 +169,7 @@ export function LocationStats() {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <ClockIcon className="h-4 w-4 text-gray-400" />
+                    <Clock className="h-4 w-4 text-gray-400" />
                     <span className="text-sm text-gray-600 dark:text-gray-400">
                       Hours Today
                     </span>
@@ -131,10 +203,10 @@ export function LocationStats() {
                   </span>
                 </div>
                 <div className="mt-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div 
+                  <div
                     className={`h-2 rounded-full ${location.color}`}
-                    style={{ 
-                      width: `${(location.data.monthlyRevenue / 60000) * 100}%` 
+                    style={{
+                      width: `${(location.data.monthlyRevenue / 60000) * 100}%`
                     }}
                   />
                 </div>

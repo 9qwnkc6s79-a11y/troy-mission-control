@@ -9,6 +9,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        border: 'hsl(var(--border))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         // Boundaries Coffee Brand Colors
         coffee: {
           50: '#fdf8f3',

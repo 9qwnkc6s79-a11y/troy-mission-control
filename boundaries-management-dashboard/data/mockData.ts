@@ -2,11 +2,21 @@ export const mockData = {
   // Combined stats for both locations
   combinedStats: {
     todaySales: 2847,
+    todaySalesLastYear: 2540,
+    todaySalesYoY: 12.1,
     todayOrders: 186,
+    todayOrdersLastYear: 168,
+    todayOrdersYoY: 10.7,
     avgOrderValue: 15.31,
+    avgOrderValueLastYear: 14.85,
+    avgOrderValueYoY: 3.1,
     staffOnDuty: 8,
     weeklyRevenue: 19250,
+    weeklyRevenueLastYear: 17100,
+    weeklyRevenueYoY: 12.6,
     monthlyRevenue: 82340,
+    monthlyRevenueLastYear: 74106,
+    monthlyRevenueYoY: 11.1,
   },
 
   // Individual location stats

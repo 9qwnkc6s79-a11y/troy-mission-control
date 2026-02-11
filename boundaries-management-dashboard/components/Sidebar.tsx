@@ -2,25 +2,25 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { 
-  HomeIcon, 
-  UsersIcon, 
-  MenuIcon, 
-  BanknotesIcon, 
-  MegaphoneIcon,
-  CogIcon,
-  ChartBarIcon
+import {
+  Home,
+  Users,
+  Menu,
+  Banknote,
+  Megaphone,
+  Settings,
+  BarChart3
 } from 'lucide-react'
 import { clsx } from 'clsx'
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: HomeIcon },
-  { name: 'Staff', href: '/staff', icon: UsersIcon },
-  { name: 'Menu', href: '/menu', icon: MenuIcon },
-  { name: 'Finance', href: '/finance', icon: BanknotesIcon },
-  { name: 'Marketing', href: '/marketing', icon: MegaphoneIcon },
-  { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
-  { name: 'Settings', href: '/settings', icon: CogIcon },
+  { name: 'Dashboard', href: '/', icon: Home },
+  { name: 'Staff', href: '/staff', icon: Users },
+  { name: 'Menu', href: '/menu', icon: Menu },
+  { name: 'Finance', href: '/finance', icon: Banknote },
+  { name: 'Marketing', href: '/marketing', icon: Megaphone },
+  { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
 export function Sidebar() {
