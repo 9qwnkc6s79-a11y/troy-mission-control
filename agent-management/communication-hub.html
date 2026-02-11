@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication Hub - Agent Management</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+    <style>
+        .chat-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            height: calc(100vh - 120px);
+            gap: 1rem;
+        }
+        
+        .agent-list {
+            background: var(--dark-surface);
+            border-radius: var(--radius);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .agent-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 0.5rem;
+        }
+        
+        .agent-item:hover {
+            background: var(--dark-elevated);
+        }
+        
+        .agent-item.active {
+            background: rgba(0, 102, 204, 0.2);
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .agent-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .agent-info {
+            flex: 1;
+        }
+        
+        .agent-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .agent-status {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .unread-badge {
+            background: var(--danger-color);
+            color: white;
+            border-radius: 12px;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            background: var(--dark-surface);
+            border-radius: var(--radius);
+        }
+        
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--dark-elevated);
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 80%;
+        }
+        
+        .message.sent {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message.sent .message-content {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            background: var(--dark-elevated);
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            position: relative;
+        }
+        
+        .message-text {
+            margin-bottom: 0.25rem;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        
+        .message-status {
+            font-size: 0.7rem;
+            color: var(--success-color);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
+        
+        .input-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .message-input {
+            width: 100%;
+            min-height: 60px;
+            max-height: 150px;
+            resize: none;
+            border-radius: 20px;
+            padding: 0.75rem 1rem;
+        }
+        
+        .input-tools {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .priority-selector {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .send-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .workflow-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: var(--dark-surface);
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .workflow-panel.active {
+            right: 0;
+        }
+        
+        .workflow-step {
+            background: var(--dark-elevated);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .handoff-card {
+            background: var(--dark-elevated);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        .handoff-card.active {
+            border-color: var(--success-color);
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .broadcast-section {
+            background: var(--dark-elevated);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .agent-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .agent-list {
+                max-height: 200px;
+                order: 2;
+            }
+            
+            .chat-area {
+                order: 1;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="dashboard.html" class="nav-brand">🤖 Agent Command Center</a>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="cron-manager.html" class="nav-link">Cron Jobs</a>
+                <a href="profiles/" class="nav-link">Profiles</a>
+                <a href="communication-hub.html" class="nav-link active">Communication</a>
+                <a href="#analytics" class="nav-link">Analytics</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: 2rem;">
+        <!-- Header Controls -->
+        <section class="mb-2">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="card-title">Inter-Agent Communication Hub</h1>
+                        <p class="card-subtitle">Coordinate tasks and manage agent interactions</p>
+                    </div>
+                    <div class="d-flex gap-1">
+                        <button class="btn btn-primary" onclick="commHub.openBroadcastModal()">
+                            📢 Broadcast
+                        </button>
+                        <button class="btn" onclick="commHub.openWorkflowPanel()">
+                            🔄 Workflows
+                        </button>
+                        <button class="btn" onclick="commHub.showAgentStatus()">
+                            📊 Status
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Chat Interface -->
+        <div class="chat-container">
+            <!-- Agent List Sidebar -->
+            <div class="agent-list">
+                <div class="mb-2">
+                    <h3>Active Agents</h3>
+                    <input type="text" class="form-control" placeholder="Search agents..." id="agent-search">
+                </div>
+                
+                <div id="agents-sidebar">
+                    <!-- Populated by JavaScript -->
+                </div>
+                
+                <div class="mt-3">
+                    <h4>Broadcast Channels</h4>
+                    <div class="agent-item" onclick="commHub.selectBroadcast('all')">
+                        <div class="agent-avatar">📢</div>
+                        <div class="agent-info">
+                            <div class="agent-name">All Agents</div>
+                            <div class="agent-status">Broadcast to everyone</div>
+                        </div>
+                    </div>
+                    <div class="agent-item" onclick="commHub.selectBroadcast('active')">
+                        <div class="agent-avatar">🟢</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Active Only</div>
+                            <div class="agent-status">Active agents only</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 id="chat-title">Select an agent to start messaging</h3>
+                            <div id="chat-subtitle" class="text-muted"></div>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <button class="btn btn-sm" onclick="commHub.clearChat()">
+                                🗑️ Clear
+                            </button>
+                            <button class="btn btn-sm" onclick="commHub.exportChat()">
+                                📤 Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="text-center text-muted" style="margin-top: 2rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+                        <h3>Welcome to the Communication Hub</h3>
+                        <p>Select an agent from the sidebar to start a conversation or send a broadcast message.</p>
+                    </div>
+                </div>
+                
+                <div class="chat-input" id="chat-input" style="display: none;">
+                    <div class="input-area">
+                        <div class="input-tools">
+                            <select class="priority-selector" id="message-priority">
+                                <option value="normal">Normal</option>
+                                <option value="high">High Priority</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                            <button class="btn btn-sm" onclick="commHub.attachFile()">📎</button>
+                            <button class="btn btn-sm" onclick="commHub.addEmoji()">😊</button>
+                            <button class="btn btn-sm" onclick="commHub.scheduleMessage()">⏰</button>
+                        </div>
+                        <textarea class="form-control message-input" 
+                                  id="message-input" 
+                                  placeholder="Type your message..."
+                                  onkeydown="commHub.handleKeyPress(event)"></textarea>
+                    </div>
+                    <button class="btn btn-primary send-button" onclick="commHub.sendMessage()">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Workflow Panel -->
+    <div class="workflow-panel" id="workflow-panel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Agent Workflows</h3>
+            <button class="btn btn-sm" onclick="commHub.closeWorkflowPanel()">✕</button>
+        </div>
+        
+        <div class="mb-3">
+            <h4>Active Workflows</h4>
+            <div id="active-workflows">
+                <div class="workflow-step">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <strong>Health Check Workflow</strong>
+                        <span class="status status-active"><span class="status-dot"></span> Running</span>
+                    </div>
+                    <div class="text-muted mt-1">Health Agent → Main Agent → User</div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 60%"></div>
+                    </div>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <strong>Market Analysis</strong>
+                        <span class="status status-idle"><span class="status-dot"></span> Pending</span>
+                    </div>
+                    <div class="text-muted mt-1">Business Agent → Research Agent → Main Agent</div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 20%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <h4>Quick Handoffs</h4>
+            <div id="handoff-templates">
+                <div class="handoff-card" onclick="commHub.executeHandoff('health-to-main')">
+                    <strong>Health → Main</strong>
+                    <div class="text-muted">Transfer health insights to main agent</div>
+                </div>
+                
+                <div class="handoff-card" onclick="commHub.executeHandoff('business-to-dev')">
+                    <strong>Business → Development</strong>
+                    <div class="text-muted">Tech requirements from business needs</div>
+                </div>
+                
+                <div class="handoff-card" onclick="commHub.executeHandoff('research-to-content')">
+                    <strong>Research → Content</strong>
+                    <div class="text-muted">Transform research into content</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <button class="btn btn-primary w-100" onclick="commHub.createWorkflow()">
+                ➕ Create New Workflow
+            </button>
+        </div>
+    </div>
+
+    <!-- Broadcast Modal -->
+    <div class="modal" id="broadcast-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h3>Broadcast Message</h3>
+            </div>
+            
+            <div class="broadcast-section">
+                <h4>Recipients</h4>
+                <div id="broadcast-recipients">
+                    <label class="agent-checkbox">
+                        <input type="checkbox" value="all" id="broadcast-all" onchange="commHub.toggleAllAgents()">
+                        <strong>All Agents</strong>
+                    </label>
+                    <div id="agent-checkboxes">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Priority Level</label>
+                <select class="form-control" id="broadcast-priority">
+                    <option value="normal">Normal</option>
+                    <option value="high">High Priority</option>
+                    <option value="urgent">Urgent - Interrupt current tasks</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea class="form-control" rows="4" id="broadcast-message" 
+                          placeholder="Enter your broadcast message..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Delivery Method</label>
+                <select class="form-control" id="broadcast-delivery">
+                    <option value="immediate">Send Immediately</option>
+                    <option value="scheduled">Schedule for Later</option>
+                    <option value="when_active">When Agent Becomes Active</option>
+                </select>
+            </div>
+            
+            <div class="d-flex gap-2 justify-content-end">
+                <button class="btn" onclick="commHub.closeBroadcastModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="commHub.sendBroadcast()">📢 Send Broadcast</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Modal -->
+    <div class="modal" id="status-modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h3>Agent Status Overview</h3>
+            </div>
+            <div id="status-content">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        class CommunicationHub {
+            constructor() {
+                this.currentAgent = null;
+                this.messages = {};
+                this.agents = [];
+                this.workflows = [];
+                this.init();
+            }
+
+            async init() {
+                await this.loadAgents();
+                this.renderAgentList();
+                this.setupEventListeners();
+                this.startMessagePolling();
+            }
+
+            async loadAgents() {
+                // Use the same mock data as the main dashboard
+                this.agents = agentManager.getMockAgents();
+            }
+
+            setupEventListeners() {
+                // Agent search
+                document.getElementById('agent-search').addEventListener('input', (e) => {
+                    this.filterAgents(e.target.value);
+                });
+
+                // Auto-resize message input
+                const messageInput = document.getElementById('message-input');
+                messageInput.addEventListener('input', () => {
+                    messageInput.style.height = 'auto';
+                    messageInput.style.height = messageInput.scrollHeight + 'px';
+                });
+            }
+
+            renderAgentList() {
+                const container = document.getElementById('agents-sidebar');
+                container.innerHTML = '';
+
+                this.agents.forEach(agent => {
+                    const unreadCount = this.getUnreadCount(agent.id);
+                    const avatar = agent.name.split(' ').map(n => n[0]).join('');
+                    
+                    const agentElement = document.createElement('div');
+                    agentElement.className = 'agent-item';
+                    agentElement.onclick = () => this.selectAgent(agent.id);
+                    
+                    agentElement.innerHTML = `
+                        <div class="agent-avatar">${avatar}</div>
+                        <div class="agent-info">
+                            <div class="agent-name">${agent.name}</div>
+                            <div class="agent-status">${agent.status} • ${agentManager.formatTimeAgo(agent.lastActivity)}</div>
+                        </div>
+                        ${unreadCount > 0 ? `<div class="unread-badge">${unreadCount}</div>` : ''}
+                    `;
+                    
+                    container.appendChild(agentElement);
+                });
+
+                // Render broadcast recipients
+                this.renderBroadcastRecipients();
+            }
+
+            renderBroadcastRecipients() {
+                const container = document.getElementById('agent-checkboxes');
+                if (!container) return;
+                
+                container.innerHTML = this.agents.map(agent => `
+                    <label class="agent-checkbox">
+                        <input type="checkbox" value="${agent.id}" class="agent-checkbox-input">
+                        ${agent.name} <span class="text-muted">(${agent.status})</span>
+                    </label>
+                `).join('');
+            }
+
+            selectAgent(agentId) {
+                this.currentAgent = this.agents.find(a => a.id === agentId);
+                if (!this.currentAgent) return;
+
+                // Update active state
+                document.querySelectorAll('.agent-item').forEach(item => 
+                    item.classList.remove('active'));
+                event.currentTarget.classList.add('active');
+
+                // Update chat header
+                document.getElementById('chat-title').textContent = this.currentAgent.name;
+                document.getElementById('chat-subtitle').textContent = 
+                    `${this.currentAgent.status} • ${this.currentAgent.model}`;
+
+                // Show chat input
+                document.getElementById('chat-input').style.display = 'flex';
+
+                // Load messages for this agent
+                this.loadMessages(agentId);
+            }
+
+            loadMessages(agentId) {
+                const messagesContainer = document.getElementById('chat-messages');
+                
+                // Initialize messages for agent if not exists
+                if (!this.messages[agentId]) {
+                    this.messages[agentId] = this.generateMockMessages(agentId);
+                }
+
+                const messages = this.messages[agentId];
+                messagesContainer.innerHTML = '';
+
+                messages.forEach(message => {
+                    const messageElement = this.createMessageElement(message);
+                    messagesContainer.appendChild(messageElement);
+                });
+
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            generateMockMessages(agentId) {
+                const agent = this.agents.find(a => a.id === agentId);
+                if (!agent) return [];
+
+                return [
+                    {
+                        id: 1,
+                        sender: 'user',
+                        text: `Hey ${agent.name.split(' ')[0]}, how are you doing?`,
+                        timestamp: Date.now() - 300000,
+                        status: 'delivered'
+                    },
+                    {
+                        id: 2,
+                        sender: agent.id,
+                        text: `Hello! I'm functioning well and ready to assist. My current status is ${agent.status} and I've processed ${agent.tokensUsed.toLocaleString()} tokens today.`,
+                        timestamp: Date.now() - 295000,
+                        status: 'delivered'
+                    },
+                    {
+                        id: 3,
+                        sender: 'user',
+                        text: 'Great! Can you give me a quick status update on your recent activities?',
+                        timestamp: Date.now() - 120000,
+                        status: 'read'
+                    }
+                ];
+            }
+
+            createMessageElement(message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${message.sender === 'user' ? 'sent' : 'received'}`;
+                
+                const avatar = message.sender === 'user' ? 
+                    'DK' : 
+                    this.agents.find(a => a.id === message.sender)?.name.split(' ').map(n => n[0]).join('') || '🤖';
+
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">${avatar}</div>
+                    <div class="message-content">
+                        <div class="message-text">${message.text}</div>
+                        <div class="message-time">${agentManager.formatDateTime(message.timestamp)}</div>
+                        ${message.sender === 'user' ? 
+                            `<div class="message-status">
+                                <span>${message.status}</span>
+                                ${message.status === 'read' ? '✓✓' : '✓'}
+                            </div>` : ''
+                        }
+                    </div>
+                `;
+
+                return messageDiv;
+            }
+
+            handleKeyPress(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    this.sendMessage();
+                }
+            }
+
+            sendMessage() {
+                const input = document.getElementById('message-input');
+                const priority = document.getElementById('message-priority').value;
+                const text = input.value.trim();
+
+                if (!text || !this.currentAgent) return;
+
+                const message = {
+                    id: Date.now(),
+                    sender: 'user',
+                    text: text,
+                    timestamp: Date.now(),
+                    priority: priority,
+                    status: 'sending'
+                };
+
+                // Add to messages
+                if (!this.messages[this.currentAgent.id]) {
+                    this.messages[this.currentAgent.id] = [];
+                }
+                this.messages[this.currentAgent.id].push(message);
+
+                // Clear input
+                input.value = '';
+                input.style.height = 'auto';
+
+                // Reload messages
+                this.loadMessages(this.currentAgent.id);
+
+                // Simulate agent response
+                setTimeout(() => {
+                    this.receiveAgentResponse(this.currentAgent.id, text);
+                }, 1500);
+
+                agentManager.showNotification(`Message sent to ${this.currentAgent.name}`, 'success');
+            }
+
+            receiveAgentResponse(agentId, originalMessage) {
+                const agent = this.agents.find(a => a.id === agentId);
+                if (!agent) return;
+
+                const responses = [
+                    "I've received your message and I'm processing it now. Give me a moment to provide a comprehensive response.",
+                    "Thank you for reaching out. I'm analyzing the situation and will get back to you with actionable insights.",
+                    "Message received! I'm working on this task and will update you with progress shortly.",
+                    "I understand your request. Let me coordinate with other systems and provide you with the best solution.",
+                    "Got it! I'm currently processing this information and will respond with detailed findings soon."
+                ];
+
+                const response = {
+                    id: Date.now(),
+                    sender: agentId,
+                    text: responses[Math.floor(Math.random() * responses.length)],
+                    timestamp: Date.now(),
+                    status: 'delivered'
+                };
+
+                this.messages[agentId].push(response);
+
+                // Update message status
+                const lastUserMessage = this.messages[agentId].filter(m => m.sender === 'user').pop();
+                if (lastUserMessage) {
+                    lastUserMessage.status = 'read';
+                }
+
+                // Reload if this agent is currently selected
+                if (this.currentAgent && this.currentAgent.id === agentId) {
+                    this.loadMessages(agentId);
+                }
+            }
+
+            // Broadcast functionality
+            openBroadcastModal() {
+                this.renderBroadcastRecipients();
+                agentManager.openModal(document.getElementById('broadcast-modal'));
+            }
+
+            closeBroadcastModal() {
+                agentManager.closeModal(document.getElementById('broadcast-modal'));
+            }
+
+            toggleAllAgents() {
+                const allCheckbox = document.getElementById('broadcast-all');
+                const agentCheckboxes = document.querySelectorAll('.agent-checkbox-input');
+                
+                agentCheckboxes.forEach(checkbox => {
+                    checkbox.checked = allCheckbox.checked;
+                });
+            }
+
+            sendBroadcast() {
+                const message = document.getElementById('broadcast-message').value;
+                const priority = document.getElementById('broadcast-priority').value;
+                const delivery = document.getElementById('broadcast-delivery').value;
+                
+                const selectedAgents = Array.from(document.querySelectorAll('.agent-checkbox-input:checked'))
+                    .map(cb => cb.value);
+
+                if (!message.trim() || selectedAgents.length === 0) {
+                    agentManager.showNotification('Please enter a message and select recipients', 'warning');
+                    return;
+                }
+
+                // Send to selected agents
+                selectedAgents.forEach(agentId => {
+                    if (!this.messages[agentId]) {
+                        this.messages[agentId] = [];
+                    }
+                    
+                    this.messages[agentId].push({
+                        id: Date.now() + Math.random(),
+                        sender: 'user',
+                        text: `📢 BROADCAST: ${message}`,
+                        timestamp: Date.now(),
+                        priority: priority,
+                        status: 'delivered'
+                    });
+                });
+
+                this.closeBroadcastModal();
+                agentManager.showNotification(`Broadcast sent to ${selectedAgents.length} agents`, 'success');
+
+                // Clear form
+                document.getElementById('broadcast-message').value = '';
+                document.getElementById('broadcast-all').checked = false;
+                this.toggleAllAgents();
+            }
+
+            // Workflow management
+            openWorkflowPanel() {
+                document.getElementById('workflow-panel').classList.add('active');
+            }
+
+            closeWorkflowPanel() {
+                document.getElementById('workflow-panel').classList.remove('active');
+            }
+
+            executeHandoff(handoffType) {
+                const handoffs = {
+                    'health-to-main': {
+                        from: 'Health Agent',
+                        to: 'Main Agent',
+                        message: 'Transferring health insights and recommendations'
+                    },
+                    'business-to-dev': {
+                        from: 'Business Agent',
+                        to: 'Development Agent',
+                        message: 'Passing technical requirements from business analysis'
+                    },
+                    'research-to-content': {
+                        from: 'Research Agent',
+                        to: 'Content Agent',
+                        message: 'Providing research findings for content creation'
+                    }
+                };
+
+                const handoff = handoffs[handoffType];
+                if (!handoff) return;
+
+                agentManager.showNotification(`Initiating handoff: ${handoff.from} → ${handoff.to}`, 'info');
+                
+                setTimeout(() => {
+                    agentManager.showNotification('Handoff completed successfully', 'success');
+                }, 2000);
+            }
+
+            createWorkflow() {
+                agentManager.showNotification('Workflow builder coming soon...', 'info');
+            }
+
+            // Status and utilities
+            showAgentStatus() {
+                const statusContent = document.getElementById('status-content');
+                statusContent.innerHTML = `
+                    <div class="grid grid-2">
+                        ${this.agents.map(agent => `
+                            <div class="card">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h4>${agent.name}</h4>
+                                    <span class="status status-${agent.status}">
+                                        <span class="status-dot"></span>
+                                        ${agent.status}
+                                    </span>
+                                </div>
+                                <div class="grid grid-2">
+                                    <div>
+                                        <small class="text-muted">Messages</small>
+                                        <div>${this.getMessageCount(agent.id)}</div>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted">Last Active</small>
+                                        <div>${agentManager.formatTimeAgo(agent.lastActivity)}</div>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted">Tokens Today</small>
+                                        <div>${(agent.tokensUsed / 1000).toFixed(1)}k</div>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted">Response Time</small>
+                                        <div>${agent.responseTime}s</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                agentManager.openModal(document.getElementById('status-modal'));
+            }
+
+            getMessageCount(agentId) {
+                return this.messages[agentId] ? this.messages[agentId].length : 0;
+            }
+
+            getUnreadCount(agentId) {
+                if (!this.messages[agentId]) return 0;
+                return this.messages[agentId].filter(m => 
+                    m.sender !== 'user' && m.status !== 'read').length;
+            }
+
+            filterAgents(searchTerm) {
+                const agentItems = document.querySelectorAll('#agents-sidebar .agent-item');
+                agentItems.forEach(item => {
+                    const agentName = item.querySelector('.agent-name').textContent.toLowerCase();
+                    if (agentName.includes(searchTerm.toLowerCase())) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            clearChat() {
+                if (!this.currentAgent) return;
+                
+                if (confirm(`Clear chat history with ${this.currentAgent.name}?`)) {
+                    this.messages[this.currentAgent.id] = [];
+                    this.loadMessages(this.currentAgent.id);
+                    agentManager.showNotification('Chat cleared', 'success');
+                }
+            }
+
+            exportChat() {
+                if (!this.currentAgent || !this.messages[this.currentAgent.id]) return;
+                
+                const messages = this.messages[this.currentAgent.id];
+                const exportData = {
+                    agent: this.currentAgent.name,
+                    exportDate: new Date().toISOString(),
+                    messages: messages
+                };
+                
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], 
+                    { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `chat_${this.currentAgent.id}_${Date.now()}.json`;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                agentManager.showNotification('Chat exported', 'success');
+            }
+
+            // Utility methods
+            attachFile() {
+                agentManager.showNotification('File attachment coming soon...', 'info');
+            }
+
+            addEmoji() {
+                const input = document.getElementById('message-input');
+                const emojis = ['👍', '👎', '😊', '🎉', '🔥', '💡', '⚡', '✅', '❌', '🚀'];
+                const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                input.value += emoji;
+                input.focus();
+            }
+
+            scheduleMessage() {
+                agentManager.showNotification('Message scheduling coming soon...', 'info');
+            }
+
+            selectBroadcast(type) {
+                if (type === 'all') {
+                    this.openBroadcastModal();
+                    document.getElementById('broadcast-all').checked = true;
+                    this.toggleAllAgents();
+                } else if (type === 'active') {
+                    this.openBroadcastModal();
+                    const activeAgents = this.agents.filter(a => a.status === 'active');
+                    activeAgents.forEach(agent => {
+                        const checkbox = document.querySelector(`input[value="${agent.id}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+            }
+
+            startMessagePolling() {
+                // Simulate real-time message updates
+                setInterval(() => {
+                    // Randomly send messages from agents
+                    if (Math.random() < 0.1) { // 10% chance every poll
+                        const randomAgent = this.agents[Math.floor(Math.random() * this.agents.length)];
+                        this.receiveRandomMessage(randomAgent.id);
+                    }
+                }, 30000); // Check every 30 seconds
+            }
+
+            receiveRandomMessage(agentId) {
+                const agent = this.agents.find(a => a.id === agentId);
+                if (!agent) return;
+
+                const randomMessages = [
+                    "Quick update: All systems running normally.",
+                    "I've completed the scheduled task successfully.",
+                    "New insights available from recent analysis.",
+                    "Reminder: There's an upcoming event you should know about.",
+                    "Performance metrics updated in the dashboard."
+                ];
+
+                const message = {
+                    id: Date.now(),
+                    sender: agentId,
+                    text: randomMessages[Math.floor(Math.random() * randomMessages.length)],
+                    timestamp: Date.now(),
+                    status: 'delivered'
+                };
+
+                if (!this.messages[agentId]) {
+                    this.messages[agentId] = [];
+                }
+                this.messages[agentId].push(message);
+
+                // Update UI if this agent is currently selected
+                if (this.currentAgent && this.currentAgent.id === agentId) {
+                    this.loadMessages(agentId);
+                }
+
+                // Update unread count in sidebar
+                this.renderAgentList();
+            }
+        }
+
+        // Initialize Communication Hub
+        document.addEventListener('DOMContentLoaded', () => {
+            window.commHub = new CommunicationHub();
+        });
+    </script>
+</body>
+</html>

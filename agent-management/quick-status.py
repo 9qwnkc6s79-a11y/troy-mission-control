@@ -57,9 +57,55 @@ def get_agent_status():
         
         print(f"{status} {name[:30]}")
         print(f"   Model: {model} | Tokens: {tokens:,} | Cost: ${estimated_cost:.3f}")
+        
+        # Token rate calculation
+        if tokens > 0:
+            cost_per_1k = (estimated_cost / (tokens / 1000))
+            print(f"   Rate: ${cost_per_1k:.4f}/1K tokens | Efficiency: {tokens/max(estimated_cost, 0.001):.0f} tokens/$")
         print()
     
     print(f"📈 TOTAL ESTIMATED COST: ${total_cost:.2f}")
+    
+    print(f"\n🔥 TOKEN USAGE BREAKDOWN")
+    print("-" * 30)
+    
+    # Sort agents by token usage
+    sorted_agents = sorted(sessions_data.get('sessions', []), 
+                          key=lambda x: x.get('totalTokens', 0), reverse=True)
+    
+    total_tokens = sum(s.get('totalTokens', 0) for s in sorted_agents)
+    
+    print(f"Total Tokens: {total_tokens:,}")
+    print(f"Average per Agent: {total_tokens // len(sorted_agents):,}")
+    print(f"Tokens per $1: {total_tokens / max(total_cost, 0.01):.0f}")
+    print()
+    
+    print("Top Token Consumers:")
+    for i, session in enumerate(sorted_agents[:3]):
+        name = session.get('displayName', 'Unknown')[:25]
+        tokens = session.get('totalTokens', 0)
+        percentage = (tokens / max(total_tokens, 1)) * 100
+        print(f"  {i+1}. {name} - {tokens:,} ({percentage:.1f}%)")
+    
+    # Token efficiency recommendations
+    print(f"\n💡 OPTIMIZATION RECOMMENDATIONS")
+    print("-" * 35)
+    
+    # Find inefficient agents
+    for session in sorted_agents[:2]:  # Top 2 token users
+        tokens = session.get('totalTokens', 0)
+        model = session.get('model', '')
+        name = session.get('displayName', 'Unknown')[:20]
+        
+        if 'opus' in model.lower() and tokens > 50000:
+            print(f"⚠️  Consider switching {name} to Sonnet for routine tasks")
+        elif tokens > 100000:
+            print(f"📊 {name} has high token usage - monitor conversations")
+    
+    if total_cost < 2:
+        print("✅ Token usage is well-optimized")
+    elif total_cost > 5:
+        print("🔥 High token costs - consider consolidating agents")
     
     print(f"\n⏰ CRON JOBS ({len(cron_data.get('jobs', []))})")
     print("-" * 20)

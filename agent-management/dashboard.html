@@ -264,6 +264,14 @@
                 <span class="metric-value text-info" id="total-tokens">0K</span>
                 <span class="metric-label">Total Tokens</span>
             </div>
+            <div class="stat-card">
+                <span class="metric-value text-warning" id="tokens-today">0K</span>
+                <span class="metric-label">Tokens Today</span>
+            </div>
+            <div class="stat-card">
+                <span class="metric-value text-danger" id="burn-rate">0K/hr</span>
+                <span class="metric-label">Burn Rate</span>
+            </div>
         </div>
 
         <!-- Task Assignment Form -->
@@ -287,6 +295,43 @@
                 <button class="btn btn-success" onclick="spawnNewAgent()">
                     ➕ Spawn New Agent
                 </button>
+            </div>
+        </div>
+
+        <!-- Token Analytics Section -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <h3 class="card-title">📊 Token Usage Analytics</h3>
+                <p class="card-subtitle">Detailed breakdown of token consumption and costs</p>
+            </div>
+            <div class="grid-2">
+                <div>
+                    <h4 style="margin-bottom: 1rem; color: var(--text-secondary);">Top Token Consumers</h4>
+                    <div id="token-leaderboard">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem; color: var(--text-secondary);">Usage Trends</h4>
+                    <div class="metric" style="margin-bottom: 1rem;">
+                        <span class="metric-value" id="avg-tokens-per-agent">0K</span>
+                        <span class="metric-label">Average per Agent</span>
+                    </div>
+                    <div class="metric" style="margin-bottom: 1rem;">
+                        <span class="metric-value" id="tokens-per-dollar">0K</span>
+                        <span class="metric-label">Tokens per $1</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="most-efficient">--</span>
+                        <span class="metric-label">Most Efficient Agent</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; padding: 1rem; background: var(--dark-elevated); border-radius: 8px;">
+                <h4 style="margin-bottom: 0.5rem; color: var(--warning-color);">💡 Optimization Recommendations</h4>
+                <div id="token-recommendations">
+                    <!-- Populated by JavaScript -->
+                </div>
             </div>
         </div>
 

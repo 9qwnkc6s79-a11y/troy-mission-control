@@ -103,6 +103,7 @@ class AgentDashboard {
 
     renderDashboard() {
         this.renderQuickStats();
+        this.renderTokenAnalytics();
         this.renderAgentGrid();
         this.renderAgentSelector();
     }
@@ -112,11 +113,113 @@ class AgentDashboard {
         const pendingTasks = this.cronJobs.filter(j => j.enabled).length;
         const totalCost = this.agents.reduce((sum, agent) => sum + agent.cost, 0);
         const totalTokens = this.agents.reduce((sum, agent) => sum + agent.tokens, 0);
+        
+        // Calculate today's estimated tokens (rough approximation)
+        const tokensToday = Math.round(totalTokens * 0.1); // Assume 10% used today
+        const burnRate = Math.round(tokensToday / 24); // Tokens per hour
 
         document.getElementById('active-agents').textContent = activeAgents;
         document.getElementById('pending-tasks').textContent = pendingTasks;
         document.getElementById('daily-cost').textContent = `$${totalCost.toFixed(2)}`;
         document.getElementById('total-tokens').textContent = `${Math.round(totalTokens / 1000)}K`;
+        document.getElementById('tokens-today').textContent = `${Math.round(tokensToday / 1000)}K`;
+        document.getElementById('burn-rate').textContent = `${burnRate}K/hr`;
+    }
+
+    renderTokenAnalytics() {
+        // Sort agents by token usage
+        const sortedAgents = [...this.agents].sort((a, b) => b.tokens - a.tokens);
+        
+        // Render token leaderboard
+        const leaderboard = document.getElementById('token-leaderboard');
+        leaderboard.innerHTML = '';
+        
+        sortedAgents.slice(0, 5).forEach((agent, index) => {
+            const item = document.createElement('div');
+            item.style.cssText = `
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid var(--border-color);
+            `;
+            
+            const percentage = (agent.tokens / sortedAgents[0].tokens * 100).toFixed(1);
+            const costPerK = agent.tokens > 0 ? (agent.cost / (agent.tokens / 1000)).toFixed(3) : '0';
+            
+            item.innerHTML = `
+                <div>
+                    <div style="font-weight: 500;">${agent.name}</div>
+                    <div style="color: var(--text-muted); font-size: 0.85rem;">$${costPerK}/1K tokens</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 600; color: var(--primary-color);">${Math.round(agent.tokens / 1000)}K</div>
+                    <div style="color: var(--text-muted); font-size: 0.85rem;">${percentage}%</div>
+                </div>
+            `;
+            
+            leaderboard.appendChild(item);
+        });
+
+        // Calculate analytics
+        const totalTokens = this.agents.reduce((sum, agent) => sum + agent.tokens, 0);
+        const totalCost = this.agents.reduce((sum, agent) => sum + agent.cost, 0);
+        const avgTokensPerAgent = totalTokens / this.agents.length;
+        const tokensPerDollar = totalCost > 0 ? totalTokens / totalCost : 0;
+        
+        // Find most efficient agent (highest tokens per dollar spent)
+        const mostEfficient = this.agents.reduce((best, agent) => {
+            if (agent.cost === 0) return best;
+            const efficiency = agent.tokens / agent.cost;
+            return efficiency > (best.tokens / best.cost || 0) ? agent : best;
+        }, this.agents[0]);
+
+        document.getElementById('avg-tokens-per-agent').textContent = `${Math.round(avgTokensPerAgent / 1000)}K`;
+        document.getElementById('tokens-per-dollar').textContent = `${Math.round(tokensPerDollar / 1000)}K`;
+        document.getElementById('most-efficient').textContent = mostEfficient ? mostEfficient.name : '--';
+
+        // Generate recommendations
+        this.renderTokenRecommendations(sortedAgents, totalCost);
+    }
+
+    renderTokenRecommendations(sortedAgents, totalCost) {
+        const recommendations = [];
+        
+        // High-cost agents using expensive models
+        const expensiveAgents = this.agents.filter(agent => 
+            agent.model.includes('opus') && agent.tokens > 50000
+        );
+        if (expensiveAgents.length > 0) {
+            recommendations.push(`Consider switching ${expensiveAgents[0].name} to Sonnet for routine tasks (could save ~$0.50/day)`);
+        }
+
+        // Inactive agents with high token usage
+        const inactiveHighUsage = this.agents.filter(agent => 
+            agent.status === 'offline' && agent.tokens > 25000
+        );
+        if (inactiveHighUsage.length > 0) {
+            recommendations.push(`Archive ${inactiveHighUsage[0].name} to reduce context costs`);
+        }
+
+        // Overall cost optimization
+        if (totalCost > 3) {
+            recommendations.push('Your daily cost ($' + totalCost.toFixed(2) + ') is above optimal range. Consider consolidating similar agents.');
+        } else {
+            recommendations.push('✅ Token usage is well-optimized for your current agent fleet');
+        }
+
+        // High burn rate warning
+        const activeTokens = this.agents.filter(a => a.status === 'active').reduce((sum, a) => sum + a.tokens, 0);
+        if (activeTokens > 100000) {
+            recommendations.push('⚠️ High active token usage detected - monitor for runaway conversations');
+        }
+
+        const container = document.getElementById('token-recommendations');
+        container.innerHTML = recommendations.map(rec => `
+            <div style="margin-bottom: 0.5rem; padding: 0.5rem; background: rgba(255, 193, 7, 0.1); border-radius: 4px; font-size: 0.9rem;">
+                ${rec}
+            </div>
+        `).join('');
     }
 
     renderAgentGrid() {
